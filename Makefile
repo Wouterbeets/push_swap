@@ -1,6 +1,10 @@
 NAME	= push_swap
 FILES	= main.c\
-		  start.c
+		  start.c\
+		  swapfunc1.c\
+		  swapfunc2.c\
+		  swapfunc3.c\
+		  algo.c
 SRC		= $(addprefix src/, $(FILES))
 OBJ		= $(SRC:src/%.c=.obj/%.o)
 FLAGS	= -Wall -Werror -Wextra

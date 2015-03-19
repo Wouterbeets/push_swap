@@ -1,62 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/03/19 11:48:57 by wbeets            #+#    #+#             */
+/*   Updated: 2015/03/19 11:49:02 by wbeets           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
-int		get_number(char *str, int *num)
+static int		get_number(char *str, int *num)
 {
 	int len;
 	int i;
 
 	len = ft_strlen(str);
-	i = 0;
+	i = -1;
 	while (i < len)
 	{
-		if (!ft_isdigit(str[i]))
+		i++;
+		if (str[i] && !ft_isdigit(str[i]))
 		{
-			if (i == 0 && str[i] == '-')
+			if (str[0] == '-')
 				continue;
-			else 
+			else
 				return (-1);
 		}
-		i++;
 	}
 	*num = ft_atoi(str);
 	return (1);
 }
 
-t_stacks		*check_args(int ac, char **av)
+static int		set_verbose(char *arg, int *i, int *ac)
+{
+	if (ft_strcmp(arg, "-v") == 0 )
+	{
+		*i += 1;
+		*ac -= 1;
+		return (1);
+	}
+	return (0);
+}
+
+static t_stacks	*check_args(int ac, char **av)
 {
 	int			i;
+	int			j;
 	t_stacks	*ret;
 
-	i = 0;
+	i = 1;
+	j = 0;
 	ret = (t_stacks *)malloc(sizeof(t_stacks));
-	ret->a = (int *)malloc(sizeof(int) * (ac - 1));
-	ret->b = (int *)malloc(sizeof(int) * (ac - 1));
-	ret->size = ac -1;
-	if (ac == 1)
-		ft_putstr("usage: ./push_swap 5 3 2 54 65 ...\n");
-	while (i < ret->size)
+	ret->size = ac - 1;
+	ret->v = set_verbose(av[1], &i, &ret->size); 
+	ret->a = (int *)malloc(sizeof(int) * (ret->size));
+	ret->b = (int *)malloc(sizeof(int) * (ret->size));
+	ret->a_used = ret->size -1;
+	ret->b_used = -1;
+	while (i < ac)
 	{
-		if (!get_number(av[i + 1], &(ret->a[i])))
+		if (!get_number(av[i], &(ret->a[j])))
 		{
 			ret->size = -1;
 			return (ret);
 		}
-		ret->b[i] = 0;	
+		ret->b[j] = 0;
 		i++;
+		j++;
 	}
 	return (ret);
 }
 
-int		main(int ac, char **av)
+int				main(int ac, char **av)
 {
 	t_stacks	*stacks;
 
+	if (ac <= 1)
+	{
+		ft_putstr("usage: ./push_swap 5 3 2 54 65 ...\n");
+		return (0);
+	}
 	if ((stacks = check_args(ac, av)) && stacks->size > 0)
 	{
 		start(stacks);
 	}
 	else 
 	{
+		ft_putstr("usage: ./push_swap 5 3 2 54 65 ...\n");
 		ft_putstr("unable to parse numbers\n");
 	}
 	free(stacks->b);
