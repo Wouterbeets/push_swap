@@ -49,6 +49,7 @@ void	find_pivot(t_stacks *stacks)
 		{
 			stacks->piv.score = sc;
 			stacks->piv.pos = i;
+			stacks->piv.num = stacks->a[i];
 		}
 		i++;
 	}

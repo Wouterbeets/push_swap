@@ -9,7 +9,17 @@ typedef struct	s_pivot
 {
 	int	score;
 	int	pos;
+	int	num;
 }				t_pivot;
+
+typedef struct	s_sort
+{	
+	int	sorted;
+	int out_of_place;
+	int	invs;
+	int	adj_invs;
+	int	ins_index;
+}				t_sort;
 
 typedef struct	s_stacks
 {
@@ -20,11 +30,14 @@ typedef struct	s_stacks
 	int		size;
 	int		v;
 	t_pivot	piv;
+	t_sort	sortedness_a;
+	t_sort	sortedness_b;
 }				t_stacks;
 
 int		start(t_stacks *stacks);
 void	print_stacks(t_stacks *stacks);
 void	find_pivot(t_stacks *stacks);
+t_sort	sortedness(int *stack);
 
 void	sa(t_stacks *stacks);
 void	sb(t_stacks *stacks);

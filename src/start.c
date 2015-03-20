@@ -39,6 +39,8 @@ void	print_stacks(t_stacks *stacks)
 int		start(t_stacks *stacks)
 {
 	find_pivot(stacks);
+	sortedness(stacks->a);
+
 	printf("pivotscore  = %d, pos = %d num = %d\n", stacks->piv.score, stacks->piv.pos, stacks->a[stacks->piv.pos]);
 	return (0);
 }

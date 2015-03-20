@@ -15,7 +15,7 @@ NO_COLOR=\x1b[0m
 OK_COLOR=\x1b[32;01m
 ERROR_COLOR=\x1b[31;01m
 WARN_COLOR=\x1b[33;01m
-INCLUDE	= -I includes -I libft/includes  -I /usr/X11/include
+INCLUDE	= -I includes -I libft  -I /usr/X11/include
 DEB		= .deb/test
 
 all: $(NAME)
