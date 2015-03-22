@@ -27,17 +27,18 @@ typedef struct	s_stacks
 	int		*b;
 	int		a_used;
 	int		b_used;
-	int		size;
+	int		size;	
 	int		v;
 	t_pivot	piv;
-	t_sort	sortedness_a;
-	t_sort	sortedness_b;
+	t_sort	sness_a;
+	t_sort	sness_b;
 }				t_stacks;
 
 int		start(t_stacks *stacks);
 void	print_stacks(t_stacks *stacks);
 void	find_pivot(t_stacks *stacks);
-t_sort	sortedness(int *stack);
+t_sort	sortedness(int *stack, int used);
+void	divide_by_pivot(t_stacks *stacks);
 
 void	sa(t_stacks *stacks);
 void	sb(t_stacks *stacks);

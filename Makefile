@@ -4,7 +4,9 @@ FILES	= main.c\
 		  swapfunc1.c\
 		  swapfunc2.c\
 		  swapfunc3.c\
-		  algo.c
+		  algo.c\
+		  sortedness.c\
+		  divide_by_pivot.c
 SRC		= $(addprefix src/, $(FILES))
 OBJ		= $(SRC:src/%.c=.obj/%.o)
 FLAGS	= -Wall -Werror -Wextra
