@@ -17,7 +17,6 @@ void rrr(t_stacks *stacks)
 	int	tmp;
 	int	i;
 
-	ft_putstr("rrr");
 	if (stacks->b_used > 0)
 	{
 		tmp = stacks->b[0];
@@ -34,7 +33,19 @@ void rrr(t_stacks *stacks)
 			stacks->a[i] = stacks->a[i + 1];
 		stacks->a[stacks->a_used] = tmp;
 	}
+}
+
+void	print_op(t_op op, t_stacks *stacks)
+{
+	static void (*fptr_arr[11])(t_stacks *) = {
+		sa, sb, ss, pa, pb, ra, rb ,rr, rra, rrb, rrr};
+	static char *str[11] = {"sa\0", "sb\0", "ss\0", "pa\0",
+		"pb\0", "ra\0", "rb\0", "rr\0", "rra\0"};
+
+	ft_putstr(str[op]);
+	fptr_arr[op](stacks);
+	if (!stacks->sness_a.sorted)
+		ft_putstr(" ");
 	if(stacks->v)
 		print_stacks(stacks);
 }
-

@@ -42,7 +42,7 @@ static int		adj_invs(int *stack, int used)
 
 	i = 0;
 	adj_invs = 0;
-	while (i < used)
+	while (i <= used)
 	{
 		if (stack[i] > stack[i + 1])
 		{
@@ -109,4 +109,3 @@ t_sort	sortedness(int *stack, int used)
 	s.ins_index = rec_lis(stack, used, 0);
 	return (s);
 }
-

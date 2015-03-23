@@ -6,7 +6,7 @@ FILES	= main.c\
 		  swapfunc3.c\
 		  algo.c\
 		  sortedness.c\
-		  divide_by_pivot.c
+		  sort.c
 SRC		= $(addprefix src/, $(FILES))
 OBJ		= $(SRC:src/%.c=.obj/%.o)
 FLAGS	= -Wall -Werror -Wextra

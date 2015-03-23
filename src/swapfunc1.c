@@ -17,37 +17,30 @@ void sa(t_stacks *stacks)
 {
 	int		tmp;
 
-	ft_putstr("sa");
 	if (stacks->a_used > 1)
 	{
 		tmp = stacks->a[stacks->a_used];
 		stacks->a[stacks->a_used] = stacks->a[stacks->a_used - 1];
 		stacks->a[stacks->a_used - 1] = tmp;
 	}
-	if(stacks->v)
-		print_stacks(stacks);
 }
 
 void sb(t_stacks *stacks)
 {
 	int		tmp;
 
-	ft_putstr("sb");
 	if (stacks->b_used > 1)
 	{
 		tmp = stacks->b[stacks->b_used];
 		stacks->b[stacks->b_used] = stacks->b[stacks->b_used - 1];
 		stacks->b[stacks->b_used - 1] = tmp;
 	}
-	if(stacks->v)
-		print_stacks(stacks);
 }
 
 void ss(t_stacks *stacks)
 {
 	int		tmp;
 
-	ft_putstr("ss");
 	if (stacks->a_used > 1)
 	{
 		tmp = stacks->a[stacks->a_used];
@@ -60,32 +53,24 @@ void ss(t_stacks *stacks)
 		stacks->b[stacks->b_used] = stacks->b[stacks->b_used - 1];
 		stacks->b[stacks->b_used - 1] = tmp;
 	}
-	if(stacks->v)
-		print_stacks(stacks);
 }
 
 void pa(t_stacks *stacks)
 {
-	ft_putstr("pa");
 	if (stacks->b_used > -1)
 	{
 		stacks->a[stacks->a_used + 1] = stacks->b[stacks->b_used];
 		stacks->a_used++;
 		stacks->b_used--;
 	}
-	if(stacks->v)
-		print_stacks(stacks);
 }
 
 void pb(t_stacks *stacks)
 {
-	ft_putstr("pb");
 	if (stacks->a_used > -1)
 	{
 		stacks->b[stacks->b_used + 1] = stacks->a[stacks->a_used];
 		stacks->b_used++;
 		stacks->a_used--;
 	}
-	if(stacks->v)
-		print_stacks(stacks);
 }

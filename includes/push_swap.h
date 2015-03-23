@@ -5,6 +5,21 @@
 # include <stdlib.h>
 # include <limits.h>
 
+typedef	enum
+{
+	SA = 0,
+	SB,
+	SS,
+	PA,
+	PB,
+	RA,
+	RB,
+	RR,
+	RRA,
+	RRB,
+	RRR
+}		t_op;
+
 typedef struct	s_pivot
 {
 	int	score;
@@ -38,8 +53,11 @@ int		start(t_stacks *stacks);
 void	print_stacks(t_stacks *stacks);
 void	find_pivot(t_stacks *stacks);
 t_sort	sortedness(int *stack, int used);
-void	divide_by_pivot(t_stacks *stacks);
+int		*sort(t_stacks *stacks);
 
+int			*copy_arr(int stack_b, t_stacks *stacks);
+t_stacks	*copy_stacks(t_stacks *stacks);
+void	print_op(t_op op, t_stacks *stacks);
 void	sa(t_stacks *stacks);
 void	sb(t_stacks *stacks);
 void	ss(t_stacks *stacks);
