@@ -6,7 +6,8 @@ FILES	= main.c\
 		  swapfunc3.c\
 		  algo.c\
 		  sortedness.c\
-		  sort.c
+		  sort.c\
+		  list.c
 SRC		= $(addprefix src/, $(FILES))
 OBJ		= $(SRC:src/%.c=.obj/%.o)
 FLAGS	= -Wall -Werror -Wextra

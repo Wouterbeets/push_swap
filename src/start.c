@@ -38,19 +38,18 @@ void	print_stacks(t_stacks *stacks)
 
 int		start(t_stacks *stacks)
 {
-	int	*list;
 	int	i;
 
 	i = 0;
-	list = sort(stacks);
-	while(list[i] != 0)
-		print_op(list[i - 1], stacks);
+	pb(stacks);
+	find_pivot(stacks);
+	printf("pivotscore  = %d, pos = %d num = %d\n", stacks->piv.score, stacks->piv.pos, stacks->piv.num);
 	print_stacks(stacks);
+	stacks->sness_a = sortedness(stacks->a, stacks->a_used);
+	stacks->sness_b = sortedness(stacks->b, stacks->b_used);
+	printf("sotred = %d, out_of_place = %d, adj_invs = %d, invs = %d lis = %d\n", stacks->sness_a.sorted,stacks->sness_a.out_of_place, stacks->sness_a.adj_invs, stacks->sness_a.invs, stacks->sness_a.ins_index);
+	printf("sotred = %d, out_of_place = %d, adj_invs = %d, invs = %d ins_index = %d\n", stacks->sness_b.sorted,stacks->sness_b.out_of_place, stacks->sness_b.adj_invs, stacks->sness_b.invs, stacks->sness_b.ins_index);
+	sort(stacks);
 	return (0);
 }
 
-	//printf("pivotscore  = %d, pos = %d num = %d\n", stacks->piv.score, stacks->piv.pos, stacks->a[stacks->piv.pos]);
-	//printf("sotred = %d, out_of_place = %d, adj_invs = %d, invs = %d lis = %d\n", stacks->sness_a.sorted,stacks->sness_a.out_of_place, stacks->sness_a.adj_invs, stacks->sness_a.invs, stacks->sness_a.ins_index);
-	//printf("pivotscore  = %d, pos = %d num = %d\n", stacks->piv.score, stacks->piv.pos, stacks->a[stacks->piv.pos]);
-	//printf("sotred = %d, out_of_place = %d, adj_invs = %d, invs = %d ins_index = %d\n", stacks->sness_a.sorted,stacks->sness_a.out_of_place, stacks->sness_a.adj_invs, stacks->sness_a.invs, stacks->sness_a.ins_index);
-	//printf("sotred = %d, out_of_place = %d, adj_invs = %d, invs = %d ins_index = %d\n", stacks->sness_b.sorted,stacks->sness_b.out_of_place, stacks->sness_b.adj_invs, stacks->sness_b.invs, stacks->sness_b.ins_index);

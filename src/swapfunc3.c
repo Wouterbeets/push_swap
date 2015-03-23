@@ -40,7 +40,7 @@ void	print_op(t_op op, t_stacks *stacks)
 	static void (*fptr_arr[11])(t_stacks *) = {
 		sa, sb, ss, pa, pb, ra, rb ,rr, rra, rrb, rrr};
 	static char *str[11] = {"sa\0", "sb\0", "ss\0", "pa\0",
-		"pb\0", "ra\0", "rb\0", "rr\0", "rra\0"};
+		"pb\0", "ra\0", "rb\0", "rr\0", "rra\0", "rrb\0", "rrr\0"};
 
 	ft_putstr(str[op]);
 	fptr_arr[op](stacks);
