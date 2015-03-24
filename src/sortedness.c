@@ -97,6 +97,41 @@ static int	rec_lis(int *stack, int used,int pos)
 	return (old_mlis + 1);
 }
 
+int		used_is_lowest(int *stack, int used)
+{
+	int		i;
+	int		lowest;
+
+	lowest = INT_MAX;
+	i = -1;
+	while (++i <= used)
+	{
+		if (lowest > stack[i])
+			lowest = stack[i];	
+	}
+	if (stack[i] == lowest)
+		return (1);
+	else
+		return (0);
+}
+
+int		used_is_highest(int *stack, int used)
+{
+	int		i;
+	int		highest;
+
+	highest = INT_MIN;
+	i = -1;
+	while (++i <= used)
+	{
+		if (highest < stack[i])
+			highest = stack[i];	
+	}
+	if (stack[i] == highest)
+		return (1);
+	else
+		return (0);
+}
 
 t_sort	sortedness(int *stack, int used)
 {
@@ -107,5 +142,7 @@ t_sort	sortedness(int *stack, int used)
 	s.adj_invs = adj_invs(stack, used);
 	s.invs = invs(stack, used);
 	s.ins_index = (used) - rec_lis(stack, used, 0);
+	s.highest = used_is_highest(stack, used); 
+	s.lowest = used_is_lowest(stack, used);
 	return (s);
 }

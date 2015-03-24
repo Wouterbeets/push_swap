@@ -28,28 +28,32 @@ int		rrr(t_stacks *stacks)
 	return (-1);
 }
 
-void	do_print_op(t_op op, t_stacks *stacks)
+int		do_op(t_op op, t_stacks *stacks)
 {
-	static int (*fptr_arr[11])(t_stacks *) = {
+	static int (*fptr_arr[NUM_OP])(t_stacks *) = {
 		sa, sb, ss, pa, pb, ra, rb ,rr, rra, rrb, rrr};
-	static char *str[11] = {"sa\0", "sb\0", "ss\0", "pa\0",
+
+	return (fptr_arr[op](stacks));
+}
+
+void	print_op(t_op op)
+{
+	static char *str[NUM_OP] = {"sa\0", "sb\0", "ss\0", "pa\0",
 		"pb\0", "ra\0", "rb\0", "rr\0", "rra\0", "rrb\0", "rrr\0"};
 
 	ft_putstr(str[op]);
-	fptr_arr[op](stacks);
-	if (!stacks->sness_a.sorted)
-		ft_putstr(" ");
+}
+
+int		do_print_op(t_op op, t_stacks *stacks)
+{
+	int		ret;
+
+	print_op(op);
+	ret = do_op(op, stacks);
 	if(stacks->v)
 	{
 		ft_putstr("\n");
 		print_stacks(stacks);
 	}
-}
-
-void	print_op(t_op op)
-{
-	static char *str[11] = {"sa\0", "sb\0", "ss\0", "pa\0",
-		"pb\0", "ra\0", "rb\0", "rr\0", "rra\0", "rrb\0", "rrr\0"};
-
-	ft_putstr(str[op]);
+	return (ret);
 }

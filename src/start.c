@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/19 11:49:17 by wbeets            #+#    #+#             */
-/*   Updated: 2015/03/19 11:49:20 by wbeets           ###   ########.fr       */
+/*   Created: 2015/03/19 NUM_OP:49:17 by wbeets            #+#    #+#             */
+/*   Updated: 2015/03/19 NUM_OP:49:20 by wbeets           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,3 +54,5 @@ int		start(t_stacks *stacks)
 			printf("b = sotred = %d, out_of_place = %d, adj_invs = %d, invs = %d lis = %d\n\n", stacks->sness_b.sorted,stacks->sness_b.out_of_place, stacks->sness_b.adj_invs, stacks->sness_b.invs, stacks->sness_b.ins_index);
 		}
 	}
+	return (1);
+}

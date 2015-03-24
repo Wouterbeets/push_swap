@@ -5,6 +5,8 @@
 # include <stdlib.h>
 # include <limits.h>
 # define MAX_DEPTH 9
+# define MAX_TESTS 11
+# define NUM_OP 11
 typedef	enum
 {
 	SA = 0,
@@ -41,6 +43,8 @@ typedef struct	s_sort
 	int	invs;
 	int	adj_invs;
 	int	ins_index;
+	int	highest;
+	int	lowest;
 }				t_sort;
 
 typedef struct	s_stacks
@@ -65,7 +69,8 @@ t_op_lst		*sort(t_stacks *stacks);
 
 int			*copy_arr(int stack_b, t_stacks *stacks);
 t_stacks	*copy_stacks(t_stacks *stacks);
-void	do_print_op(t_op op, t_stacks *stacks);
+int		do_op(t_op op, t_stacks *stacks);
+int		do_print_op(t_op op, t_stacks *stacks);
 void	print_list(t_op_lst *list);
 void	print_op(t_op op);
 int		sa(t_stacks *stacks);
