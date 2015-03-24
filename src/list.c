@@ -42,6 +42,11 @@ t_op_lst	*remove_last(t_op_lst *begin)
 		free(tmp->next);
 		tmp->next = NULL;
 	}
+	else
+	{
+		free(begin);
+		begin = NULL;
+	}
 	return (begin);
 }
 
@@ -85,4 +90,20 @@ t_op_lst	*copy_list(t_op_lst *begin)
 		}
 	}
 	return (ret);
+}
+
+void	print_list(t_op_lst *list)
+{
+	t_op_lst	*tmp;
+
+	tmp = list;
+	while (tmp)
+	{
+		print_op(tmp->op);		
+		if (tmp->next)
+			ft_putstr(" ");
+		else 
+			ft_putstr("\n");
+		tmp = tmp->next;
+	}
 }

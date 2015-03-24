@@ -12,7 +12,7 @@
 
 #include "../includes/push_swap.h"
 
-void ra(t_stacks *stacks)
+int ra(t_stacks *stacks)
 {
 	int	tmp;
 	int	i;
@@ -23,10 +23,12 @@ void ra(t_stacks *stacks)
 		while (--i > 0)
 			stacks->a[i] = stacks->a[i - 1];	
 		stacks->a[0] = tmp;
+		return (RRA);
 	}
+	return (-1);
 }
 
-void rb(t_stacks *stacks)
+int rb(t_stacks *stacks)
 {
 	int	tmp;
 	int i;
@@ -37,31 +39,28 @@ void rb(t_stacks *stacks)
 		while (--i > 0)
 			stacks->b[i] = stacks->b[i - 1];	
 		stacks->b[0] = tmp;
+		return (RRB);
 	}
+	return (-1);
 }
 
-void rr(t_stacks *stacks)
+int rr(t_stacks *stacks)
 {
-	int	tmp;
-	int	i;
+	int	a;
+	int	b;
 
-	if ((i = stacks->b_used + 1) > 1)
-	{
-		tmp = stacks->b[stacks->b_used];
-		while (--i > 0)
-			stacks->b[i] = stacks->b[i - 1];	
-		stacks->b[0] = tmp;
-	}
-	if ((i = stacks->a_used + 1) > 1)
-	{
-		tmp = stacks->a[stacks->a_used];
-		while (--i > 0)
-			stacks->a[i] = stacks->a[i - 1];	
-		stacks->a[0] = tmp;
-	}
+	a = ra(stacks);
+	b = rb(stacks);
+	if (a > -1 && b > -1)
+		return (RRR);
+	if (a > -1)
+		return (a);
+	if (b > -1)
+		return (b);
+	return (-1);
 }
 
-void rra(t_stacks *stacks)
+int rra(t_stacks *stacks)
 {
 	int	tmp;
 	int	i;
@@ -73,10 +72,12 @@ void rra(t_stacks *stacks)
 		while (++i < stacks->a_used)
 			stacks->a[i] = stacks->a[i + 1];
 		stacks->a[stacks->a_used] = tmp;
+		return (RA);
 	}
+	return (-1);
 }
 
-void rrb(t_stacks *stacks)
+int rrb(t_stacks *stacks)
 {
 	int	tmp;
 	int	i;
@@ -88,5 +89,7 @@ void rrb(t_stacks *stacks)
 		while (++i < stacks->b_used)
 			stacks->b[i] = stacks->b[i + 1];
 		stacks->b[stacks->b_used] = tmp;
+		return(RB);
 	}
+	return (-1);
 }

@@ -13,7 +13,7 @@ static int		sorted(int *stack, int used)
 			break;
 		i++;
 	}
-	if (i + 1 == used)
+	if (i == used)
 		return (1);
 	else
 		return (0);
@@ -84,7 +84,7 @@ static int	rec_lis(int *stack, int used,int pos)
 
 	i = pos + 1;
 	mlis = 0;
-	old_mlis = 0;
+	old_mlis = -1;
 	while (i <= used)
 	{
 		if (stack[pos] <= stack[i])
@@ -106,6 +106,6 @@ t_sort	sortedness(int *stack, int used)
 	s.out_of_place = out_of_place(stack, used);
 	s.adj_invs = adj_invs(stack, used);
 	s.invs = invs(stack, used);
-	s.ins_index = rec_lis(stack, used, 0);
+	s.ins_index = (used) - rec_lis(stack, used, 0);
 	return (s);
 }

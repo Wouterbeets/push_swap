@@ -4,7 +4,7 @@
 # include "../libft/includes/libft.h"
 # include <stdlib.h>
 # include <limits.h>
-# define MAX_DEPTH 10
+# define MAX_DEPTH 9
 typedef	enum
 {
 	SA = 0,
@@ -65,18 +65,20 @@ t_op_lst		*sort(t_stacks *stacks);
 
 int			*copy_arr(int stack_b, t_stacks *stacks);
 t_stacks	*copy_stacks(t_stacks *stacks);
-void	print_op(t_op op, t_stacks *stacks);
-void	sa(t_stacks *stacks);
-void	sb(t_stacks *stacks);
-void	ss(t_stacks *stacks);
-void	pa(t_stacks *stacks);
-void	pb(t_stacks *stacks);
-void	rrr(t_stacks *stacks);
-void	ra(t_stacks *stacks);
-void	rb(t_stacks *stacks);
-void	rr(t_stacks *stacks);
-void	rra(t_stacks *stacks);
-void	rrb(t_stacks *stacks);
+void	do_print_op(t_op op, t_stacks *stacks);
+void	print_list(t_op_lst *list);
+void	print_op(t_op op);
+int		sa(t_stacks *stacks);
+int		sb(t_stacks *stacks);
+int		ss(t_stacks *stacks);
+int		pa(t_stacks *stacks);
+int		pb(t_stacks *stacks);
+int		rrr(t_stacks *stacks);
+int		ra(t_stacks *stacks);
+int		rb(t_stacks *stacks);
+int		rr(t_stacks *stacks);
+int		rra(t_stacks *stacks);
+int		rrb(t_stacks *stacks);
 
 
 t_op_lst	*new_lst_item(int op);
