@@ -17,7 +17,7 @@ int sa(t_stacks *stacks)
 {
 	int		tmp;
 
-	if (stacks->a_used > 1)
+	if (stacks->a_used > 0)
 	{
 		tmp = stacks->a[stacks->a_used];
 		stacks->a[stacks->a_used] = stacks->a[stacks->a_used - 1];
@@ -31,7 +31,7 @@ int sb(t_stacks *stacks)
 {
 	int		tmp;
 
-	if (stacks->b_used > 1)
+	if (stacks->b_used > 0)
 	{
 		tmp = stacks->b[stacks->b_used];
 		stacks->b[stacks->b_used] = stacks->b[stacks->b_used - 1];

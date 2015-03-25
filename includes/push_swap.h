@@ -4,8 +4,8 @@
 # include "../libft/includes/libft.h"
 # include <stdlib.h>
 # include <limits.h>
-# define MAX_DEPTH 9
-# define MAX_TESTS 11
+# define MAX_DEPTH 8
+# define MAX_TESTS 1
 # define NUM_OP 11
 typedef	enum
 {
@@ -39,12 +39,17 @@ typedef struct	s_pivot
 typedef struct	s_sort
 {	
 	int	sorted;
+	int	inv_sorted;
 	int out_of_place;
+	int inv_out_of_place;
 	int	invs;
 	int	adj_invs;
 	int	ins_index;
+	int inv_ins_index;
 	int	highest;
 	int	lowest;
+	int	num_big_piv;
+	int num_small_piv;
 }				t_sort;
 
 typedef struct	s_stacks
@@ -59,12 +64,14 @@ typedef struct	s_stacks
 	t_sort		sness_a;
 	t_sort		sness_b;
 	t_op_lst	*best_lst;
+	t_op	last_op;
+	int		last_score;
 }				t_stacks;
 
 int		start(t_stacks *stacks);
 void	print_stacks(t_stacks *stacks);
 void	find_pivot(t_stacks *stacks);
-t_sort	sortedness(int *stack, int used);
+t_sort	sortedness(int *stack, int used, int piv);
 t_op_lst		*sort(t_stacks *stacks);
 
 int			*copy_arr(int stack_b, t_stacks *stacks);

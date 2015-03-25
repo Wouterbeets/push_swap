@@ -39,20 +39,16 @@ int		start(t_stacks *stacks)
 
 	i = 0;
 	find_pivot(stacks);
-	stacks->sness_a = sortedness(stacks->a, stacks->a_used);
-	stacks->sness_b = sortedness(stacks->b, stacks->b_used);
-	lst = sort(stacks);
-	if (stacks->v)
-	{
+	stacks->sness_a = sortedness(stacks->a, stacks->a_used, stacks->piv.num);
+	stacks->sness_b = sortedness(stacks->b, stacks->b_used, stacks->piv.num);
+		lst = sort(stacks);
+	//if (stacks->v)
+	//{
 		while (lst)
 		{
 			do_print_op(lst->op, stacks);
-			stacks->sness_a = sortedness(stacks->a, stacks->a_used);
-			stacks->sness_b = sortedness(stacks->b, stacks->b_used);
 			lst = lst->next;
-				printf("a = sotred = %d, out_of_place = %d, adj_invs = %d, invs = %d lis = %d\n", stacks->sness_a.sorted,stacks->sness_a.out_of_place, stacks->sness_a.adj_invs, stacks->sness_a.invs, stacks->sness_a.ins_index);
-			printf("b = sotred = %d, out_of_place = %d, adj_invs = %d, invs = %d lis = %d\n\n", stacks->sness_b.sorted,stacks->sness_b.out_of_place, stacks->sness_b.adj_invs, stacks->sness_b.invs, stacks->sness_b.ins_index);
 		}
-	}
+	//}
 	return (1);
 }

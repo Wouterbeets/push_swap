@@ -92,8 +92,9 @@ int				main(int ac, char **av)
 		ft_putstr("usage: ./push_swap 5 3 2 54 65 ...\n");
 		ft_putstr("unable to parse numbers\n");
 	}
-	//free(stacks->b);
-	//free(stacks->a);
-	//free(stacks);
+	free(stacks->b);
+	free(stacks->a);
+	free_list(stacks->best_lst);
+	free(stacks);
 	return (0);
 }
