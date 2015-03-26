@@ -281,5 +281,6 @@ t_sort	sortedness(int *stack, int used, int piv)
 	s.lowest = lowest(stack, used);
 	s.num_big_piv = num_big_piv(stack, used, piv);
 	s.num_small_piv = num_small_piv(stack, used, piv);
+	s.used = used;
 	return (s);
 }

@@ -50,6 +50,7 @@ typedef struct	s_sort
 	int	lowest;
 	int	num_big_piv;
 	int num_small_piv;
+	int	used;
 }				t_sort;
 
 typedef struct	s_stacks
@@ -63,8 +64,11 @@ typedef struct	s_stacks
 	t_pivot		piv;
 	t_sort		sness_a;
 	t_sort		sness_b;
+	t_sort		old_sness_a;
+	t_sort		old_sness_b;
 	t_op_lst	*best_lst;
 	t_op	last_op;
+	t_op	undo;
 	int		last_score;
 }				t_stacks;
 

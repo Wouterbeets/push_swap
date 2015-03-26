@@ -43,13 +43,10 @@
 
 int				get_sort_score(t_stacks *stacks, t_op op)
 {
-	int	score;
+	int	scoreb;
 	int	scorea;
+	int	score;
 
-	scorea = (stacks->sness_a.ins_index)+ stacks->sness_a.out_of_place;
-	//scorea = (stacks->sness_a.ins_index);
-	score = scorea + 100;
-	score += stacks->sness_b.inv_ins_index + stacks->sness_b.inv_out_of_place;
 	if (stacks->sness_a.sorted && stacks->b_used == -1)
 		return (INT_MIN);
 	if (op == RRR && (stacks->a_used < 1 || stacks->b_used < 1))
@@ -62,33 +59,54 @@ int				get_sort_score(t_stacks *stacks, t_op op)
 		return (INT_MAX);
 	if (op == RRB && stacks->last_op == RRB && stacks->b_used < 2)
 		return (INT_MAX);
-	if (op == PB && stacks->sness_b.lowest < stacks->sness_a.highest)
+
+	score = stacks->size;
+	scorea = stacks->sness_a.ins_index + stacks->sness_a.out_of_place;
+	scoreb = stacks->sness_b.inv_ins_index + stacks->sness_b.inv_out_of_place;
+	if (!stacks->old_sness_a.sorted) 
+	{
+		if (scorea < stacks->old_sness_a.ins_index + stacks->old_sness_a.out_of_place)
+		{
+			score /=2;
+			if (stacks->sness_a.sorted &&stacks->a_used > 1)
+			{
+				score /= 2;
+				if (stacks->sness_a.highest < stacks->sness_b.lowest)
+					score /= 2;
+			}
+		}
+		if (stacks->old_sness_b.used == -1)
+		{
+			if (stacks->b_used >= 0)
+			{
+				if (stacks->sness_b.lowest < stacks->sness_a.highest)
+					score += stacks->b_used;
+				if (stacks->sness_b.lowest > stacks->piv.num)
+					score /= 2;
+			}
+		}
+		if (stacks->old_sness_b.used >= 0)
+		{
+			if (scorea < stacks->old_sness_b.inv_ins_index + stacks->old_sness_a.inv_out_of_place)
+			{
+				score /= 2;
+				if (stacks->sness_a.highest < stacks->sness_b.lowest)
+					score /= 2;
+				if (stacks->sness_b.inv_sorted && stacks->sness_b.lowest >= stacks->sness_a.highest)
+					score /= 5;
+			}
+			score += stacks->b_used;
+		}
+	}
+	if (stacks->old_sness_a.sorted)
+	{	
+		if (stacks->old_sness_b.inv_sorted)
+			if (op == PA)
+				return (INT_MIN);
+		if (!stacks->sness_a.sorted)
 		score *= 2;
-	if (op == PB && stacks->sness_b.inv_sorted && stacks->sness_b.lowest >= stacks->sness_a.highest)
-		score /= 2;
-	if (op == PA && stacks->sness_a.sorted && stacks->sness_b.lowest >= stacks->sness_a.highest)
-		score /= 3;
-	if (stacks->sness_a.highest == stacks->a[stacks->a_used])
-		score /= 2;
-	if (stacks->sness_a.sorted && stacks->a_used > 1)
-		score /= 2;
-//	if (stacks->sness_a.sorted && stacks->sness_a.num_big_piv == 0)
-//		score /= 2;
-//	if (op == PB && stacks->b[stacks->b_used] > stacks->piv.num)
-//		score /= 2;
-//	if (op == PB && stacks->b[stacks->b_used] <= stacks->piv.num)
-//		score *= 2;
-//	//if (op == RA && stacks->a[stacks->a_used] <= stacks->piv.num)
-//		//score = score - (score / 3);
-	if (op == PA && scorea > 0)
-		score *= 2;
-//	if (op == RA && stacks->sness_a.highest < stacks->piv.num && stacks->sness_a.highest == stacks->a[stacks->a_used])
-//		score /= 2;
-//	if (op == RRA && stacks->sness_a.highest < stacks->piv.num && stacks->sness_a.highest == stacks->a[stacks->a_used])
-//		score /= 2;
-	//if (stacks->last_score < score)
-		//return (INT_MAX);
-	return (score);
+	}
+	return (score + scorea + scoreb);
 }
 
 
@@ -99,7 +117,7 @@ int				get_op_sness(int i, t_stacks *stacks)
 
 	ret = 0;
 	undo = -1;
-	if (i != stacks->last_op)
+	if (i != stacks->undo)
 		undo = do_op(i, stacks);
 	if (undo > -1)
 	{
@@ -182,14 +200,14 @@ static int	rec_sort(t_stacks *stacks, t_op_lst *begin, int counter, int *best)
 
 	ret = -1;
 	undo = -1;
-	stacks->sness_a = sortedness(stacks->a, stacks->a_used, stacks->piv.num);
-	stacks->sness_b = sortedness(stacks->b, stacks->b_used, stacks->piv.num);
+	stacks->old_sness_a = sortedness(stacks->a, stacks->a_used, stacks->piv.num);
+	stacks->old_sness_b = sortedness(stacks->b, stacks->b_used, stacks->piv.num);
 	if (stacks->v)
 	{
 		print_list(begin);
 		print_stacks(stacks);
 	}
-	if (stacks->sness_a.sorted == 1 && stacks->b_used == -1)
+	if (stacks->old_sness_a.sorted == 1 && stacks->b_used == -1)
 	{
 		ft_putstr("awesome");
 		return (counter);
@@ -204,7 +222,8 @@ static int	rec_sort(t_stacks *stacks, t_op_lst *begin, int counter, int *best)
 		{
 			undo = do_op(ops->op, stacks);
 			begin = add_to_list(begin, ops->op);
-			stacks->last_op = undo;
+			stacks->last_op = ops->op;
+			stacks->undo = undo;
 			stacks->last_score = get_sort_score(stacks, ops->op);
 			if( (ret = rec_sort(stacks, begin, counter + 1, best)) > -1)
 			{	
