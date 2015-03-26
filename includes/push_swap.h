@@ -34,6 +34,7 @@ typedef struct	s_pivot
 	int	score;
 	int	pos;
 	int	num;
+	int	sorted;
 }				t_pivot;
 
 typedef struct	s_sort
@@ -43,6 +44,7 @@ typedef struct	s_sort
 	int out_of_place;
 	int inv_out_of_place;
 	int	invs;
+	int	rev_invs;
 	int	adj_invs;
 	int	ins_index;
 	int inv_ins_index;
@@ -50,6 +52,10 @@ typedef struct	s_sort
 	int	lowest;
 	int	num_big_piv;
 	int num_small_piv;
+	int	highest_dis;
+	int	lowest_dis;
+	int	high_dis;
+	int	low_dis;
 	int	used;
 }				t_sort;
 
@@ -69,6 +75,8 @@ typedef struct	s_stacks
 	t_op_lst	*best_lst;
 	t_op	last_op;
 	t_op	undo;
+	int		bsort;
+	int		asort;
 	int		last_score;
 }				t_stacks;
 

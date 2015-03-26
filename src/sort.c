@@ -41,17 +41,17 @@
 //	return(ret);
 //}
 
-int				get_sort_score(t_stacks *stacks, t_op op)
+int		obvious_moves(t_stacks *stacks, t_op op)
 {
-	int	scoreb;
-	int	scorea;
-	int	score;
-
 	if (stacks->sness_a.sorted && stacks->b_used == -1)
 		return (INT_MIN);
 	if (op == RRR && (stacks->a_used < 1 || stacks->b_used < 1))
 		return (INT_MAX);
 	if (op == RR && (stacks->a_used < 1 || stacks->b_used < 1))
+		return (INT_MAX);
+	if (op == SS && stacks->undo == SB)
+		return (INT_MAX);
+	if (op == SS && stacks->undo == SA)
 		return (INT_MAX);
 	if (op == SS && (stacks->a_used < 1 || stacks->b_used < 1))
 		return (INT_MAX);
@@ -59,54 +59,80 @@ int				get_sort_score(t_stacks *stacks, t_op op)
 		return (INT_MAX);
 	if (op == RRB && stacks->last_op == RRB && stacks->b_used < 2)
 		return (INT_MAX);
+	return (0);
+}
 
-	score = stacks->size;
-	scorea = stacks->sness_a.ins_index + stacks->sness_a.out_of_place;
-	scoreb = stacks->sness_b.inv_ins_index + stacks->sness_b.inv_out_of_place;
-	if (!stacks->old_sness_a.sorted) 
-	{
-		if (scorea < stacks->old_sness_a.ins_index + stacks->old_sness_a.out_of_place)
-		{
-			score /=2;
-			if (stacks->sness_a.sorted &&stacks->a_used > 1)
-			{
-				score /= 2;
-				if (stacks->sness_a.highest < stacks->sness_b.lowest)
-					score /= 2;
-			}
-		}
-		if (stacks->old_sness_b.used == -1)
-		{
-			if (stacks->b_used >= 0)
-			{
-				if (stacks->sness_b.lowest < stacks->sness_a.highest)
-					score += stacks->b_used;
-				if (stacks->sness_b.lowest > stacks->piv.num)
-					score /= 2;
-			}
-		}
-		if (stacks->old_sness_b.used >= 0)
-		{
-			if (scorea < stacks->old_sness_b.inv_ins_index + stacks->old_sness_a.inv_out_of_place)
-			{
-				score /= 2;
-				if (stacks->sness_a.highest < stacks->sness_b.lowest)
-					score /= 2;
-				if (stacks->sness_b.inv_sorted && stacks->sness_b.lowest >= stacks->sness_a.highest)
-					score /= 5;
-			}
-			score += stacks->b_used;
-		}
-	}
+int		winning_move(t_stacks *stacks, t_op op)
+{
 	if (stacks->old_sness_a.sorted)
-	{	
-		if (stacks->old_sness_b.inv_sorted)
-			if (op == PA)
-				return (INT_MIN);
-		if (!stacks->sness_a.sorted)
-		score *= 2;
+	{
+		if (stacks->old_sness_a.highest <= stacks->old_sness_b.lowest)
+		{
+			if (stacks->old_sness_b.inv_sorted)
+			{
+				if (op == PA)
+					return (1);
+			}
+		}
 	}
-	return (score + scorea + scoreb);
+	return (0);
+}
+
+int				get_sort_score(t_stacks *stacks, t_op op)
+{
+	int	scoreb;
+	int	scorea;
+	int	score;
+
+	if ((score = obvious_moves(stacks, op)) != 0)
+			return (score);
+	score = 100;
+	if (winning_move(stacks, op))
+		return (-1);
+	scorea = 0;
+	scoreb = 0;
+	if (stacks->piv.sorted == 0 && stacks->old_sness_a.num_big_piv == 0 && stacks->old_sness_b.num_small_piv == 0)
+		stacks->piv.sorted = 1;
+	if (stacks->piv.sorted)
+	{
+		scorea = stacks->sness_a.invs + (5 * stacks->sness_a.num_big_piv);
+		scorea += stacks->sness_a.out_of_place;
+		scoreb = stacks->sness_b.rev_invs + (5 * stacks->sness_b.num_small_piv);
+		scoreb += stacks->sness_b.inv_out_of_place;
+		score = scorea + scoreb;
+		if (stacks->old_sness_b.inv_sorted)
+			stacks->bsort = 1;
+	}
+	if (stacks->bsort)
+	{
+		ft_putstr("foo");
+		score = stacks->sness_a.invs + (5 * stacks->sness_a.num_big_piv);
+		score += stacks->sness_a.out_of_place;
+		scoreb = stacks->sness_b.rev_invs + (5 * stacks->sness_b.num_small_piv);
+		scoreb += stacks->sness_b.inv_out_of_place;
+		if (op == PB || op == RB || op == SB || op == RR || op == SS || op == RRB || op == RRR || op == PA)
+		{
+			scoreb += stacks->sness_b.num_small_piv;
+			scoreb += stacks->sness_b.inv_out_of_place;
+		}
+		score = scorea + scoreb;
+	}
+	else
+	{
+		scorea = stacks->sness_a.ins_index;
+		if (op != PA)
+			scorea += stacks->sness_a.highest_dis;
+		scorea += stacks->sness_a.num_big_piv * (stacks->size * 10);
+		scorea += stacks->sness_a.out_of_place;
+
+		scoreb = stacks->sness_b.inv_ins_index;
+		if (op != PB)
+			scoreb += stacks->sness_b.lowest_dis;
+		scoreb += stacks->sness_b.num_small_piv * (stacks->size);
+		scoreb += stacks->sness_b.inv_out_of_place;
+		score = scorea + scoreb;
+	}
+	return (score);
 }
 
 
@@ -253,6 +279,7 @@ t_op_lst	*sort(t_stacks *stacks)
 	list = NULL;
 	best = INT_MAX;	
 	stacks->last_op = -1;
+	stacks->undo = -1;
 	stacks->last_score = INT_MAX;
 	if (rec_sort(stacks, list, 0, &best))
 	{

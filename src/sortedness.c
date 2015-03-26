@@ -88,6 +88,27 @@ static int		adj_invs(int *stack, int used)
 	
 }
 
+static int		rev_invs(int *stack, int used)
+{
+	int	i;
+	int	j;
+	int	invs;
+
+	i = 0;
+	j = 1;
+	invs = 0;
+	while (i < used)
+	{
+		j = i;
+		while (j + 1 <= used && stack[i] < stack[j + 1])
+			j++;
+		if (j > i)
+			invs += j - i;
+		i++;
+	}	
+	return (invs);
+}
+
 static int		invs(int *stack, int used)
 {
 	int	i;
@@ -263,6 +284,79 @@ int		num_small_piv(int *stack, int used, int piv)
 	return (score);
 }
 
+int		low_dist_to_used(int *stack, int used, int piv)
+{
+	int		score;
+	int		i;
+	int		pos;
+
+	score = 0;
+	pos = -1;
+	i = used / 2;
+	while (++i <= used)
+	{
+		if (stack[i] < piv)
+			pos = i;
+	}
+	score = used - pos;
+	i = used / 2 + 1;
+	while (--i >= 0)
+	{
+		if (stack[i] > piv)
+			pos = i;
+	}
+	return (i < score ? i : score);
+	
+}
+
+int		high_dist_to_used(int *stack, int used, int piv)
+{
+	int		score;
+	int	i;
+	int		pos;
+
+	score = 0;
+	pos = -1;
+	i = used / 2;
+	while (++i <= used)
+	{
+		if (stack[i] > piv)
+			pos = i;
+	}
+	score = used - pos;
+	i = used / 2 + 1;
+	while (--i >= 0)
+	{
+		if (stack[i] > piv)
+			pos = i;
+	}
+	return (i < score ? i : score);
+}
+
+int		highest_dist_to_used(int *stack, int used,int highest)
+{
+	int		score;
+	int	i;
+	int		pos;
+
+	score = 0;
+	pos = -1;
+	i = used / 2;
+	while (++i <= used)
+	{
+		if (stack[i] == highest)
+			pos = i;
+	}
+	score = used - pos;
+	i = used / 2 + 1;
+	while (--i >= 0)
+	{
+		if (stack[i] == highest)
+			pos = i;
+	}
+	return (i < score ? i : score);
+}
+
 t_sort	sortedness(int *stack, int used, int piv)
 {
 	t_sort	s;
@@ -273,6 +367,7 @@ t_sort	sortedness(int *stack, int used, int piv)
 	s.inv_out_of_place = inv_out_of_place(stack, used);
 	s.adj_invs = adj_invs(stack, used);
 	s.invs = invs(stack, used);
+	s.rev_invs = rev_invs(stack, used);
 	s.ins_index = (used) - rec_lis(stack, used);
 	s.inv_ins_index = (used) - inv_rec_lis(stack, used);
 	if (s.ins_index == -1)
@@ -281,6 +376,10 @@ t_sort	sortedness(int *stack, int used, int piv)
 	s.lowest = lowest(stack, used);
 	s.num_big_piv = num_big_piv(stack, used, piv);
 	s.num_small_piv = num_small_piv(stack, used, piv);
+	s.highest_dis = highest_dist_to_used(stack, used, s.highest);
+	s.low_dis = low_dist_to_used(stack, used, s.lowest);
+	s.lowest_dis = highest_dist_to_used(stack, used, s.lowest);
+	s.high_dis = high_dist_to_used(stack, used, piv);
 	s.used = used;
 	return (s);
 }
