@@ -80,6 +80,7 @@ typedef struct	s_stacks
 	int		last_score;
 }				t_stacks;
 
+int				global_dist(t_stacks *stacks);
 int		start(t_stacks *stacks);
 void	print_stacks(t_stacks *stacks);
 void	find_pivot(t_stacks *stacks);

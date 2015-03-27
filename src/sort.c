@@ -95,42 +95,93 @@ int				get_sort_score(t_stacks *stacks, t_op op)
 		stacks->piv.sorted = 1;
 	if (stacks->piv.sorted)
 	{
-		scorea = stacks->sness_a.invs + (5 * stacks->sness_a.num_big_piv);
-		scorea += stacks->sness_a.out_of_place;
-		scoreb = stacks->sness_b.rev_invs + (5 * stacks->sness_b.num_small_piv);
-		scoreb += stacks->sness_b.inv_out_of_place;
-		score = scorea + scoreb;
-		if (stacks->old_sness_b.inv_sorted)
-			stacks->bsort = 1;
-	}
-	if (stacks->bsort)
-	{
-		ft_putstr("foo");
-		score = stacks->sness_a.invs + (5 * stacks->sness_a.num_big_piv);
-		score += stacks->sness_a.out_of_place;
-		scoreb = stacks->sness_b.rev_invs + (5 * stacks->sness_b.num_small_piv);
-		scoreb += stacks->sness_b.inv_out_of_place;
-		if (op == PB || op == RB || op == SB || op == RR || op == SS || op == RRB || op == RRR || op == PA)
-		{
-			scoreb += stacks->sness_b.num_small_piv;
-			scoreb += stacks->sness_b.inv_out_of_place;
-		}
-		score = scorea + scoreb;
-	}
-	else
-	{
+		//print_op(op);
+		//ft_putstr("\n");
+		//ft_putstr("ins_index == ");
+		//ft_putnbr(stacks->sness_a.ins_index);
+		//ft_putstr("\n");
+		//ft_putstr("b = ins_index == ");
+		//ft_putnbr(stacks->sness_b.inv_ins_index);
+		//ft_putstr("\n");
+		//ft_putstr("highest_dis =");
+		//ft_putnbr(stacks->sness_a.highest_dis);
+		//ft_putstr("\n");
+		//ft_putstr("invs =");
+		//ft_putnbr(stacks->sness_a.invs);
+		//ft_putstr("\n");
+
 		scorea = stacks->sness_a.ins_index;
-		if (op != PA)
-			scorea += stacks->sness_a.highest_dis;
-		scorea += stacks->sness_a.num_big_piv * (stacks->size * 10);
-		scorea += stacks->sness_a.out_of_place;
+		scorea += stacks->sness_a.highest_dis;
+		scorea += stacks->sness_a.invs;
+		//scorea += stacks->sness_a.invs;
+		scorea += stacks->sness_a.num_big_piv * (stacks->size / 2);
 
 		scoreb = stacks->sness_b.inv_ins_index;
-		if (op != PB)
-			scoreb += stacks->sness_b.lowest_dis;
-		scoreb += stacks->sness_b.num_small_piv * (stacks->size);
-		scoreb += stacks->sness_b.inv_out_of_place;
+		scoreb += stacks->sness_b.lowest_dis;
+		scoreb += stacks->sness_b.rev_invs;
+		//scoreb += stacks->sness_b.rev_invs;
+		scoreb += stacks->sness_b.num_small_piv * (stacks->size / 2);
 		score = scorea + scoreb;
+
+		//scorea = stacks->sness_a.ins_index;
+		//if (op != PA)
+		//	scorea += stacks->sness_a.highest_dis + (2 * stacks->sness_b.num_small_piv);
+		//else 
+		//	scorea += stacks->sness_a.num_big_piv;
+		////scorea += stacks->sness_a.out_of_place;
+		//scoreb = stacks->sness_b.inv_ins_index + (2 * stacks->sness_b.num_small_piv);
+		//if (op != PB)
+		//	scoreb += stacks->sness_b.lowest_dis;
+		//else 
+		//	scoreb += stacks->sness_b.num_small_piv;
+		////scoreb += stacks->sness_b.inv_out_of_place;
+		//score = scorea + scoreb;
+		//if (stacks->old_sness_b.inv_sorted)
+		//	stacks->bsort = 1;
+		score += global_dist(stacks);
+		print_op(op);
+		ft_putstr(" ");
+		ft_putnbr(score);
+		ft_putstr("\n");
+	}
+	//if (stacks->bsort)
+	//{
+	//	ft_putstr("foo");
+	//	score = stacks->sness_a.invs + (5 * stacks->sness_a.num_big_piv);
+	//	score += stacks->sness_a.out_of_place;
+	//	scoreb = stacks->sness_b.rev_invs + (5 * stacks->sness_b.num_small_piv);
+	//	scoreb += stacks->sness_b.inv_out_of_place;
+	//	if (op == PB || op == RB || op == SB || op == RR || op == SS || op == RRB || op == RRR || op == PA)
+	//	{
+	//		scoreb += stacks->sness_b.num_small_piv;
+	//		scoreb += stacks->sness_b.inv_out_of_place;
+	//	}
+	//	score = scorea + scoreb;
+	//}
+	else
+	{
+		print_op(op);
+		ft_putstr("\n");
+		ft_putstr("ins_index == ");
+		ft_putnbr(stacks->sness_a.ins_index);
+		ft_putstr("\n");
+		ft_putstr("b = ins_index == ");
+		ft_putnbr(stacks->sness_b.inv_ins_index);
+		ft_putstr("\n");
+		ft_putstr("highest_dis =");
+		ft_putnbr(stacks->sness_a.highest_dis);
+		ft_putstr("\n");
+		//if (op != PA || op != PB)
+		scorea = stacks->sness_a.ins_index;
+		scorea += stacks->sness_a.highest_dis;
+		scorea += stacks->sness_a.num_big_piv * stacks->size;
+		scorea += stacks->sness_a.high_dis;
+
+		scoreb = stacks->sness_b.inv_ins_index;
+		scoreb += stacks->sness_b.lowest_dis;
+		scoreb += stacks->sness_b.low_dis;
+		scoreb += stacks->sness_b.num_small_piv * stacks->size;
+		score = scorea + scoreb + 1000;
 	}
 	return (score);
 }
@@ -281,6 +332,9 @@ t_op_lst	*sort(t_stacks *stacks)
 	stacks->last_op = -1;
 	stacks->undo = -1;
 	stacks->last_score = INT_MAX;
+	ft_putstr("global_dist = ");
+	ft_putnbr(global_dist(stacks));
+	ft_putstr("\n");
 	if (rec_sort(stacks, list, 0, &best))
 	{
 		print_list(stacks->best_lst);
