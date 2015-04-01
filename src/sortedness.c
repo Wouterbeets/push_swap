@@ -151,7 +151,7 @@ int				global_number_dist(t_stacks *stacks, int val, int i)
 		distleft = 0;
 		distright = 0;
 	}
-	return (distleft < distright ? distleft * 3: distright * 3 );
+	return (distleft < distright ? distleft: distright);
 }
 
 int				dist_inv_b(t_stacks *stacks)
@@ -167,29 +167,33 @@ int				dist_inv_b(t_stacks *stacks)
 
 	i = -1;
 	pos = -1;
-	score = global_dist(stacks); 
 	while (++i < stacks->b_used)
 	{
 		val1 = rel_iterator(stacks, i + stacks->a_used + 1);
 		val2 = rel_iterator(stacks, i + stacks->a_used + 2);
 		if (*val1 > *val2)
 		{
-			ft_putstr("val1 ");
-			ft_putnbr(*val1);
-			ft_putstr("\n");
-			ft_putstr("val2 ");
-			ft_putnbr(*val2);
-			ft_putstr("\n");
-			ft_putstr("score ");
-			ft_putnbr(score);
-			ft_putstr("\n");
+			//ft_putstr("val1 ");
+			//ft_putnbr(*val1);
+			//ft_putstr("\n");
+			//ft_putstr("val2 ");
+			//ft_putnbr(*val2);
+			//ft_putstr("\n");
+			//ft_putstr("score ");
+			//ft_putnbr(score);
+			//ft_putstr("\n");
+			score = global_number_dist(stacks, *val1, i + stacks->a_used + 1); 
+			score += global_number_dist(stacks, *val2, i + stacks->a_used + 2); 
+			score += global_num_inv(stacks);
 			tmp = *val1;
 			*val1 = *val2;
 			*val2 = tmp;
-			newscore = global_dist(stacks);
-			ft_putstr("ns ");
-			ft_putnbr(newscore);
-			ft_putstr("\n");
+			newscore = global_number_dist(stacks, *val1, i + stacks->a_used + 1); 
+			newscore += global_number_dist(stacks, *val2, i + stacks->a_used + 2); 
+			newscore += global_num_inv(stacks);
+			//ft_putstr("ns ");
+			//newft_putnbr(newscore);
+			//ft_putstr("\n");
 			tmp = *val1;
 			*val1 = *val2;
 			*val2 = tmp;
@@ -202,14 +206,14 @@ int				dist_inv_b(t_stacks *stacks)
 	if (pos > -1)
 	{
 		posb = pos - (stacks->a_used + 1);
-		ft_putstr("\nposb = ");
-		ft_putnbr(posb);
+		//ft_putstr("\nposb = ");
+		//ft_putnbr(posb);
 		posb = posb < (stacks->b_used + 1) / 2 ? posb + 1:  stacks->b_used - (posb);
 		if (posb < 0)
 			posb *= -1;
-		ft_putstr("\ndist = ");
-		ft_putnbr(posb);
-		ft_putstr("\n");
+		//ft_putstr("\ndist = ");
+		//ft_putnbr(posb);
+		//ft_putstr("\n");
 		return(posb);
 	}
 	else
@@ -234,11 +238,13 @@ int				dist_inv_a(t_stacks *stacks)
 		val2 = rel_iterator(stacks, i + 1);
 		if (*val1 > *val2)
 		{
-			score = global_dist(stacks); 
+			score = global_number_dist(stacks, *val1, i); 
+			score += global_number_dist(stacks, *val2, i + 1); 
 			tmp = *val1;
 			*val1 = *val2;
 			*val2 = tmp;
-			newscore = global_dist(stacks);
+			newscore = global_number_dist(stacks, *val1, i); 
+			newscore += global_number_dist(stacks, *val2, i + 1); 
 			tmp = *val1;
 			*val1 = *val2;
 			*val2 = tmp;
@@ -248,10 +254,10 @@ int				dist_inv_a(t_stacks *stacks)
 	}
 	if (pos > -1)
 	{
-		ft_putstr("\npos = ");
-		ft_putnbr(pos);
-		ft_putstr("\n");
-		pos = pos < (stacks->a_used + 1) / 2 ? pos + 2 : stacks->a_used - (pos + 1);
+		//ft_putstr("\npos = ");
+		//ft_putnbr(pos);
+		//ft_putstr("\n");
+		pos = pos < (stacks->a_used + 1) / 2 ? pos + 2 : (stacks->a_used - 1) - (pos);
 		return (pos < 0 ? pos * -1 : pos);
 	}
 	else
@@ -286,10 +292,10 @@ int				dist_to_closest_inv(t_stacks *stacks)
 			if (closest > dist)
 			{
 				closest = dist;
-				ft_putnbr(val2);
-				ft_putstr(" ");
-				ft_putnbr(val3);
-				ft_putstr("\n");
+				//ft_putnbr(val2);
+				//ft_putstr(" ");
+				//ft_putnbr(val3);
+				//ft_putstr("\n");
 			}
 		}
 	}
@@ -464,26 +470,26 @@ int				global_dist(t_stacks *stacks)
 	return (dist + (global_num_inv(stacks) * 2));
 }
 
-static int		invs(int *stack, int used)
-{
-	int	i;
-	int	j;
-	int	invs;
-
-	i = 0;
-	j = 1;
-	invs = 0;
-	while (i < used)
-	{
-		j = i;
-		while (j + 1 <= used && stack[i] > stack[j + 1])
-			j++;
-		if (j > i)
-			invs += j - i;
-		i++;
-	}	
-	return (invs);
-}
+//static int		invs(int *stack, int used)
+//{
+//	int	i;
+//	int	j;
+//	int	invs;
+//
+//	i = 0;
+//	j = 1;
+//	invs = 0;
+//	while (i < used)
+//	{
+//		j = i;
+//		while (j + 1 <= used && stack[i] > stack[j + 1])
+//			j++;
+//		if (j > i)
+//			invs += j - i;
+//		i++;
+//	}	
+//	return (invs);
+//}
 
 static int		sorted(int *stack, int used)
 {
@@ -519,172 +525,172 @@ static int		inv_sorted(int *stack, int used)
 		return (0);
 }
 
-static int		inv_out_of_place(int *stack, int used)
-{
-	int	i;
-	int	out_of_place;
+//static int		inv_out_of_place(int *stack, int used)
+//{
+//	int	i;
+//	int	out_of_place;
+//
+//	i = 0;
+//	out_of_place = 0;
+//	while (i < used)
+//	{
+//		if (stack[i] < stack[i + 1])
+//			out_of_place++;
+//		i++;
+//	}	
+//	return (out_of_place);
+//}
+//
+//static int		out_of_place(int *stack, int used)
+//{
+//	int	i;
+//	int	out_of_place;
+//
+//	i = 0;
+//	out_of_place = 0;
+//	while (i < used)
+//	{
+//		if (stack[i] > stack[i + 1])
+//			out_of_place++;
+//		i++;
+//	}	
+//	return (out_of_place);
+//}
+//
+//static int		adj_invs(int *stack, int used)
+//{
+//	int	i;
+//	int	adj_invs;
+//
+//	i = 0;
+//	adj_invs = 0;
+//	while (i <= used)
+//	{
+//		if (stack[i] > stack[i + 1])
+//		{
+//			if (i + 1 <= used && stack[i] < stack[i + 2])
+//				adj_invs++;
+//		}
+//		i++;
+//	}	
+//	return (adj_invs);
+//
+//}
+//
+//static int		rev_invs(int *stack, int used)
+//{
+//	int	i;
+//	int	j;
+//	int	invs;
+//
+//	i = 0;
+//	j = 1;
+//	invs = 0;
+//	while (i < used)
+//	{
+//		j = i;
+//		while (j + 1 <= used && stack[i] < stack[j + 1])
+//			j++;
+//		if (j > i)
+//			invs += j - i;
+//		i++;
+//	}	
+//	return (invs);
+//}
+//
+//static int	inv_rec_helper(int *stack, int used, int pos, int start)
+//{
+//	int	i;
+//	int	max_for_number;
+//	int	old_max_for_number;
+//
+//	if (pos < start)
+//		used = start;
+//	i = pos + 1;
+//	max_for_number = 0;
+//	old_max_for_number = -1;
+//	while (i <= used)
+//	{
+//		if (stack[pos] >= stack[i])
+//		{
+//			if ((max_for_number = inv_rec_helper(stack, used, i, start)) > old_max_for_number)
+//				old_max_for_number = max_for_number;
+//		}
+//		i++;
+//		if (used != start && i == used)
+//		{
+//			i = 0;
+//			used = start;
+//		}
+//	}
+//	return (old_max_for_number + 1);
+//}
 
-	i = 0;
-	out_of_place = 0;
-	while (i < used)
-	{
-		if (stack[i] < stack[i + 1])
-			out_of_place++;
-		i++;
-	}	
-	return (out_of_place);
-}
+//static int	inv_rec_lis(int *stack, int used)
+//{
+//	int	max_for_number;
+//	int	old_max_for_number;
+//	int	pos;
+//
+//	pos = 0;
+//	max_for_number = 0;
+//	old_max_for_number = -1;
+//	while(pos < used)
+//	{
+//		max_for_number = inv_rec_helper(stack, used, pos, pos);
+//		if (max_for_number > old_max_for_number)
+//			old_max_for_number = max_for_number;
+//		pos++;
+//	}
+//	return (old_max_for_number);
+//}
 
-static int		out_of_place(int *stack, int used)
-{
-	int	i;
-	int	out_of_place;
-
-	i = 0;
-	out_of_place = 0;
-	while (i < used)
-	{
-		if (stack[i] > stack[i + 1])
-			out_of_place++;
-		i++;
-	}	
-	return (out_of_place);
-}
-
-static int		adj_invs(int *stack, int used)
-{
-	int	i;
-	int	adj_invs;
-
-	i = 0;
-	adj_invs = 0;
-	while (i <= used)
-	{
-		if (stack[i] > stack[i + 1])
-		{
-			if (i + 1 <= used && stack[i] < stack[i + 2])
-				adj_invs++;
-		}
-		i++;
-	}	
-	return (adj_invs);
-
-}
-
-static int		rev_invs(int *stack, int used)
-{
-	int	i;
-	int	j;
-	int	invs;
-
-	i = 0;
-	j = 1;
-	invs = 0;
-	while (i < used)
-	{
-		j = i;
-		while (j + 1 <= used && stack[i] < stack[j + 1])
-			j++;
-		if (j > i)
-			invs += j - i;
-		i++;
-	}	
-	return (invs);
-}
-
-static int	inv_rec_helper(int *stack, int used, int pos, int start)
-{
-	int	i;
-	int	max_for_number;
-	int	old_max_for_number;
-
-	if (pos < start)
-		used = start;
-	i = pos + 1;
-	max_for_number = 0;
-	old_max_for_number = -1;
-	while (i <= used)
-	{
-		if (stack[pos] >= stack[i])
-		{
-			if ((max_for_number = inv_rec_helper(stack, used, i, start)) > old_max_for_number)
-				old_max_for_number = max_for_number;
-		}
-		i++;
-		if (used != start && i == used)
-		{
-			i = 0;
-			used = start;
-		}
-	}
-	return (old_max_for_number + 1);
-}
-
-static int	inv_rec_lis(int *stack, int used)
-{
-	int	max_for_number;
-	int	old_max_for_number;
-	int	pos;
-
-	pos = 0;
-	max_for_number = 0;
-	old_max_for_number = -1;
-	while(pos < used)
-	{
-		max_for_number = inv_rec_helper(stack, used, pos, pos);
-		if (max_for_number > old_max_for_number)
-			old_max_for_number = max_for_number;
-		pos++;
-	}
-	return (old_max_for_number);
-}
-
-static int	rec_helper(int *stack, int used, int pos, int start)
-{
-	int	i;
-	int	max_for_number;
-	int	old_max_for_number;
-
-	if (pos < start)
-		used = start;
-	i = pos + 1;
-	max_for_number = 0;
-	old_max_for_number = -1;
-	while (i <= used)
-	{
-		if (stack[pos] <= stack[i])
-		{
-			if ((max_for_number = rec_helper(stack, used, i, start)) > old_max_for_number)
-				old_max_for_number = max_for_number;
-		}
-		i++;
-		if (used != start && i == used)
-		{
-			i = 0;
-			used = start;
-		}
-	}
-	return (old_max_for_number + 1);
-}
-
-static int	rec_lis(int *stack, int used)
-{
-	int	max_for_number;
-	int	old_max_for_number;
-	int	pos;
-
-	pos = 0;
-	max_for_number = 0;
-	old_max_for_number = -1;
-	while(pos < used)
-	{
-		max_for_number = rec_helper(stack, used, pos, pos);
-		if (max_for_number > old_max_for_number)
-			old_max_for_number = max_for_number;
-		pos++;
-	}
-	return (old_max_for_number);
-}
+//static int	rec_helper(int *stack, int used, int pos, int start)
+//{
+//	int	i;
+//	int	max_for_number;
+//	int	old_max_for_number;
+//
+//	if (pos < start)
+//		used = start;
+//	i = pos + 1;
+//	max_for_number = 0;
+//	old_max_for_number = -1;
+//	while (i <= used)
+//	{
+//		if (stack[pos] <= stack[i])
+//		{
+//			if ((max_for_number = rec_helper(stack, used, i, start)) > old_max_for_number)
+//				old_max_for_number = max_for_number;
+//		}
+//		i++;
+//		if (used != start && i == used)
+//		{
+//			i = 0;
+//			used = start;
+//		}
+//	}
+//	return (old_max_for_number + 1);
+//}
+//
+//static int	rec_lis(int *stack, int used)
+//{
+//	int	max_for_number;
+//	int	old_max_for_number;
+//	int	pos;
+//
+//	pos = 0;
+//	max_for_number = 0;
+//	old_max_for_number = -1;
+//	while(pos < used)
+//	{
+//		max_for_number = rec_helper(stack, used, pos, pos);
+//		if (max_for_number > old_max_for_number)
+//			old_max_for_number = max_for_number;
+//		pos++;
+//	}
+//	return (old_max_for_number);
+//}
 
 int		lowest(int *stack, int used)
 {
@@ -825,15 +831,15 @@ t_sort	sortedness(int *stack, int used, int piv)
 
 	s.sorted = sorted(stack, used);
 	s.inv_sorted = inv_sorted(stack, used);
-	s.out_of_place = out_of_place(stack, used);
-	s.inv_out_of_place = inv_out_of_place(stack, used);
-	s.adj_invs = adj_invs(stack, used);
-	s.invs = invs(stack, used);
-	s.rev_invs = rev_invs(stack, used);
-	s.ins_index = (used) - rec_lis(stack, used);
-	s.inv_ins_index = (used) - inv_rec_lis(stack, used);
-	if (s.ins_index == -1)
-		s.ins_index = 0;
+	//s.out_of_place = out_of_place(stack, used);
+	//s.inv_out_of_place = inv_out_of_place(stack, used);
+	//s.adj_invs = adj_invs(stack, used);
+	//s.invs = invs(stack, used);
+	//js.rev_invs = rev_invs(stack, used);
+	//s.ins_index = (used) - rec_lis(stack, used);
+	//s.inv_ins_index = (used) - inv_rec_lis(stack, used);
+	//if (s.ins_index == -1)
+		//s.ins_index = 0;
 	s.highest = highest(stack, used); 
 	s.lowest = lowest(stack, used);
 	s.num_big_piv = num_big_piv(stack, used, piv);

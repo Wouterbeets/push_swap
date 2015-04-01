@@ -35,20 +35,11 @@ void	print_stacks(t_stacks *stacks)
 int		start(t_stacks *stacks)
 {
 	int	i;
-	t_op_lst *lst;
 
 	i = 0;
 	find_pivot(stacks);
 	stacks->sness_a = sortedness(stacks->a, stacks->a_used, stacks->piv.num);
 	stacks->sness_b = sortedness(stacks->b, stacks->b_used, stacks->piv.num);
-		lst = sort(stacks);
-	//if (stacks->v)
-	//{
-		while (lst)
-		{
-			do_print_op(lst->op, stacks);
-			lst = lst->next;
-		}
-	//}
+	sort(stacks);
 	return (1);
 }
