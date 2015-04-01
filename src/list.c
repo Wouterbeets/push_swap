@@ -13,13 +13,14 @@
 
 #include "../includes/push_swap.h"
 
-t_op_lst	*new_lst_item(int op)
+t_op_lst	*new_lst_item(int op, int score)
 {
 	t_op_lst	*ret;
 
 	ret = (t_op_lst *)malloc(sizeof(t_op_lst));
 	ret->next = NULL;
 	ret->op = op;
+	ret->score = score;
 	return (ret);
 }
 
@@ -50,11 +51,11 @@ t_op_lst	*remove_last(t_op_lst *begin)
 	return (begin);
 }
 
-t_op_lst	*add_to_list(t_op_lst *begin, int op)
+t_op_lst	*add_to_list(t_op_lst *begin, int op, int score)
 {
 	if (begin == NULL)
-		return (new_lst_item(op));
-	add_to_end(begin, new_lst_item(op));
+		return (new_lst_item(op, score));
+	add_to_end(begin, new_lst_item(op, score));
 	return (begin);
 }
 
@@ -80,11 +81,11 @@ t_op_lst	*copy_list(t_op_lst *begin)
 	ret = NULL;
 	if (tmp)
 	{
-		ret = new_lst_item(tmp->op);
+		ret = new_lst_item(tmp->op, tmp->score);
 		ret_it = ret;
 		while (tmp->next)
 		{
-			ret_it->next = new_lst_item(tmp->next->op);
+			ret_it->next = new_lst_item(tmp->next->op, tmp->next->score);
 			tmp = tmp->next;
 			ret_it = ret_it->next;
 		}
@@ -99,7 +100,7 @@ void	print_list(t_op_lst *list)
 	tmp = list;
 	while (tmp)
 	{
-		print_op(tmp->op);		
+		print_op(tmp->op);
 		if (tmp->next)
 			ft_putstr(" ");
 		else 

@@ -1,8 +1,8 @@
 
-
 #include "../includes/push_swap.h"
+#include <stdio.h>
 
-int				find_lowest_sub(int	*stack, int used)
+int				find_lowest_sub(int	*stack, int used, int a)
 {
 	int	i;
 	int	min;
@@ -10,6 +10,7 @@ int				find_lowest_sub(int	*stack, int used)
 
 	i = -1;
 	min = INT_MAX;
+	pos = 0;
 	while (++i <= used)
 	{
 		if (min > stack[i])
@@ -18,8 +19,44 @@ int				find_lowest_sub(int	*stack, int used)
 			pos = i;
 		}
 	}
+	if (pos == 0 && stack[used] == min && a)
+		return (used);
 	return (pos);
 }
+
+int				rel_iterator_pos(t_stacks *stacks, int i)
+{	
+	int		pos;
+	int		posa;
+	int		posb;
+	int		*stack;
+
+	posa = find_lowest_sub(stacks->a, stacks->a_used, 1);
+	posb = find_lowest_sub(stacks->b, stacks->b_used, 0);
+	if (i < stacks->size)
+	{
+		if (i <= stacks->a_used)
+		{
+			if (posa + i > stacks->a_used)
+				pos = posa + (i - (stacks->a_used + 1));
+			else 
+				pos = posa + i;
+			stack = stacks->a;
+			return (pos);
+		}
+		else
+		{
+			if (posb - (i - (stacks->a_used + 1)) > -1) 
+				pos = posb - (i - (stacks->a_used + 1));
+			else
+				pos = (posb + stacks->b_used + 1) - (i - (stacks->a_used + 1));
+			stack = stacks->b;
+			return (pos + stacks->a_used + 1);
+		}
+	}
+	return (INT_MIN);
+}
+
 
 int				*rel_iterator(t_stacks *stacks, int i)
 {	
@@ -28,29 +65,196 @@ int				*rel_iterator(t_stacks *stacks, int i)
 	int		posb;
 	int		*stack;
 
-	posa = find_lowest_sub(stacks->a, stacks->a_used);
-	posb = find_lowest_sub(stacks->b, stacks->b_used);
+	posa = find_lowest_sub(stacks->a, stacks->a_used, 1);
+	posb = find_lowest_sub(stacks->b, stacks->b_used, 0);
 	if (i < stacks->size)
 	{
 		if (i <= stacks->a_used)
 		{
-			if (posa + i >= stacks->a_used)
-				pos = i - stacks->a_used;
+			if (posa + i > stacks->a_used)
+				pos = posa + (i - (stacks->a_used + 1));
 			else 
 				pos = posa + i;
 			stack = stacks->a;
 		}
 		else
 		{
-			if (posb - (i - stacks->a_used) > -1) 
-				pos = posb - (i -stacks->a_used);
+			if (posb - (i - (stacks->a_used + 1)) > -1) 
+				pos = posb - (i - (stacks->a_used + 1));
 			else
-				pos = (posb + stacks->b_used) - (i - stacks->a_used);
+				pos = (posb + stacks->b_used + 1) - (i - (stacks->a_used + 1));
 			stack = stacks->b;
 		}
 		return (&stack[pos]);
 	}
 	return (NULL);
+}
+
+int				global_number_dist(t_stacks *stacks, int val, int i)
+{
+	int		j;
+	int		pos;
+	int		doubles;
+	int		distleft;
+	int		distright;
+
+	j = -1;
+	pos = 0;
+	doubles = 0;
+	while (++j < stacks->size)
+	{
+		if (val > *rel_iterator(stacks, j))
+			pos++;
+		if (i != j && val == *rel_iterator(stacks, j))
+			doubles++;
+	}
+	distleft = i > pos ? i - pos : pos - i;
+	distright = i > pos ? stacks->size - i + pos : (stacks->size - pos) + i;
+	if (i >= pos && i <= pos + doubles)
+	{
+		distleft = 0;
+		distright = 0;
+	}
+	return (distleft < distright ? distleft : distright );
+}
+
+int				dist_inv_b(t_stacks *stacks)
+{
+	int		i;
+	int		*val1;
+	int		*val2;
+	int		tmp;
+	int		score;
+	int		newscore;
+	int		pos;
+	int		posb;
+
+	i = -1;
+	while (++i < stacks->b_used)
+	{
+		val1 = rel_iterator(stacks, i + stacks->a_used + 1);
+		val2 = rel_iterator(stacks, i + stacks->a_used + 2);
+		if (*val1 > *val2)
+		{
+			score = global_number_dist(stacks, *val1, i + stacks->a_used + 1); 
+			score += global_number_dist(stacks, *val2, i + stacks->a_used + 2);
+			tmp = *val1;
+			*val1 = *val2;
+			*val2 = tmp;
+			newscore = global_number_dist(stacks, *val1, i + stacks->a_used + 1);
+			newscore += global_number_dist(stacks, *val2, i + stacks->a_used + 2);
+			tmp = *val1;
+			*val1 = *val2;
+			*val2 = tmp;
+			if (newscore < score)
+				pos = rel_iterator_pos(stacks, i + stacks->a_used + 1);
+		}
+	}
+	posb = pos - (stacks->a_used + 1);
+	posb = posb < (stacks->b_used + 1) / 2 ? stacks->b_used - (posb + 1) : posb + 1;
+	if (posb < 0)
+		posb *= -1;
+	ft_putstr("\nposb = ");
+	ft_putnbr(posb);
+	ft_putstr("\n");
+	return(posb);
+}
+
+int				dist_inv_a(t_stacks *stacks)
+{ 
+	int		i;
+	int		*val1;
+	int		*val2;
+	int		tmp;
+	int		score;
+	int		newscore;
+	int		pos;
+
+	i = -1;
+	while (++i < stacks->a_used)
+	{
+		val1 = rel_iterator(stacks, i);
+		val2 = rel_iterator(stacks, i + 1);
+		if (*val1 > *val2)
+		{
+			score = global_number_dist(stacks, *val1, i); 
+			score += global_number_dist(stacks, *val2, i + 1);
+			tmp = *val1;
+			*val1 = *val2;
+			*val2 = tmp;
+			newscore = global_number_dist(stacks, *val1, i);
+			newscore += global_number_dist(stacks, *val2, i + 1);
+			tmp = *val1;
+			*val1 = *val2;
+			*val2 = tmp;
+			if (newscore < score)
+				pos = rel_iterator_pos(stacks, i);
+		}
+	}
+	ft_putstr("\npos = ");
+	ft_putnbr(pos);
+	ft_putstr("\n");
+	pos = pos < (stacks->a_used + 1) / 2 ? pos + 2 : stacks->a_used - (pos + 1);
+	return (pos < 0 ? pos * -1 : pos);
+}
+
+int				dist_to_closest_inv(t_stacks *stacks)
+{
+	int		i;
+	int		pos;
+	int		closest;
+	int		dist;
+	int		val1;
+	int		val2;
+	int		val3;
+	int		val4;
+
+	i = -1;
+	closest = INT_MAX;
+	while (++i < stacks->size - 3)
+	{
+		val1 = *rel_iterator(stacks, i);
+		val2 = *rel_iterator(stacks, i + 1);
+		val3 = *rel_iterator(stacks, i + 2);
+		val4 = *rel_iterator(stacks, i + 3);
+		if (val2 > val3 && val2 <= val4 && val1 <= val3)
+		{
+			pos = rel_iterator_pos(stacks, i + 2);
+			dist = stacks->a_used >= pos ? stacks->a_used - pos : (stacks->b_used -1) - ((pos - stacks->a_used) - 1) ;
+			if (dist < 0)
+				dist *= -1;
+			if (closest > dist)
+			{
+				closest = dist;
+				ft_putnbr(val2);
+				ft_putstr(" ");
+				ft_putnbr(val3);
+				ft_putstr("\n");
+			}
+		}
+	}
+	return (closest);
+}
+
+
+void			print_global(t_stacks *stacks)
+{
+	int i;
+
+	i = 0;
+	ft_putstr("\t");
+	while (i < stacks->size)
+	{
+		ft_putnbr(*rel_iterator(stacks, i));
+		if (i == stacks->a_used)
+		{
+			ft_putstr(" | ");
+		}
+		ft_putstr(" ");
+		i++;
+	}
+	ft_putstr("\n");
+
 }
 
 int				*iterator(t_stacks *stacks, int i)
@@ -103,31 +307,101 @@ int				find_lowest(t_stacks *stacks)
 	return (pos);
 }
 
-
-int				global_dist(t_stacks *stacks)
+int				global_rel_ins_index(t_stacks *stacks)
 {
-	int		start_pos;
+	int		i;
+	int		j;
+	int		*val;
+	int		old_lis;
+	int		lis;
+
+	old_lis = INT_MIN;
+	lis = 0;
+	i = -1;
+	while ((++i < stacks->size && (val = rel_iterator(stacks, i))))
+	{
+		j = i;
+		while (++j < stacks->size -1)
+		{
+			if (*val < *rel_iterator(stacks, j))
+				lis++;
+		}
+		if (lis > old_lis)
+			old_lis = lis;
+		lis = 0;
+	}
+	return (stacks->size - 1 - old_lis);
+}
+
+int				global_ins_index(t_stacks *stacks)
+{	int		i;
+	int		j;
+	int		*val;
+	int		old_lis;
+	int		lis;
+
+	lis = 0;
+	i = -1;
+	while ((val = iterator(stacks, ++i)))
+	{
+		j = i;
+		while (++j < stacks->size -1)
+		{
+			if (*val < *iterator(stacks, j))
+				lis++;
+		}
+		if (lis > old_lis)
+			old_lis = lis;
+		lis = 0;
+	}
+	return (stacks->size - 1 - old_lis);
+
+
+
+}
+
+int				global_real_dist(t_stacks *stacks)
+{
 	int		i;
 	int		j;
 	int		*val;
 	int		pos;
+	int		distleft;
+	int		distright;
 	int		dist;
 
 	pos = 0;
 	dist = 0;
-	start_pos = find_lowest(stacks);
 	i = -1;
-	while(++i < stacks->size - 1 && (val = rel_iterator(stacks, i)))
+	while ((val = iterator(stacks, ++i)))
 	{
 		j = -1;
 		while (++j < stacks->size -1)
 		{
-			if (*val > *rel_iterator(stacks, j))
+			if (*val > *iterator(stacks, j))
 				pos++;
 		}
-		dist += i > pos ? i - pos : pos - i;
+		distleft = i > pos ? i - pos : pos - i;
+		distright = i > pos ? stacks->size - i + pos : (stacks->size - pos) + i;
+		dist += distleft < distright ? distleft : distright;
 		pos = 0;
 	}
+	return (dist);
+
+}
+
+
+int				global_dist(t_stacks *stacks)
+{
+	int		i;
+	int		*val;
+	int		dist;
+
+	dist = 0;
+	i = -1;
+	while(++i < stacks->size - 1 && (val = rel_iterator(stacks, i)))
+		dist += global_number_dist(stacks, *val, i);
+	print_global(stacks);
 	return (dist);
 }
 

@@ -27,6 +27,7 @@ typedef struct	s_op_lst
 {
 	struct s_op_lst	*next;
 	int					op;
+	int					score;
 }				t_op_lst;
 
 typedef struct	s_pivot
@@ -78,9 +79,18 @@ typedef struct	s_stacks
 	int		bsort;
 	int		asort;
 	int		last_score;
+	int		max_depth;
+	int		max_op;
+	int		glob;
 }				t_stacks;
 
+int				dist_inv_b(t_stacks *stacks);
+int				dist_inv_a(t_stacks *stacks);
+int				dist_to_closest_inv(t_stacks *stacks);
+int				global_ins_index(t_stacks *stacks);
+int				global_rel_ins_index(t_stacks *stacks);
 int				global_dist(t_stacks *stacks);
+int				global_real_dist(t_stacks *stacks);
 int		start(t_stacks *stacks);
 void	print_stacks(t_stacks *stacks);
 void	find_pivot(t_stacks *stacks);
@@ -106,9 +116,9 @@ int		rra(t_stacks *stacks);
 int		rrb(t_stacks *stacks);
 
 
-t_op_lst	*new_lst_item(int op);
+t_op_lst	*new_lst_item(int op, int score);
 void		add_to_end(t_op_lst *begin, t_op_lst *to_add);
-t_op_lst	*add_to_list(t_op_lst *begin, int op);
+t_op_lst	*add_to_list(t_op_lst *begin, int op, int score);
 void		free_list(t_op_lst *list);
 t_op_lst	*remove_last(t_op_lst *begin);
 t_op_lst	*copy_list(t_op_lst *begin);
