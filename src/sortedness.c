@@ -2,6 +2,23 @@
 #include "../includes/push_swap.h"
 #include <stdio.h>
 
+int				global_num_inv(t_stacks	*stacks)
+{
+	int		i;
+	int		invs;
+
+	i = -1;
+	invs = 0;
+	while (++i < stacks->size - 1)
+	{
+		if (*rel_iterator(stacks, i) > *rel_iterator(stacks, i + 1))
+		{
+			invs++;
+		}
+	}
+	return (invs);
+}
+
 int				find_lowest_sub(int	*stack, int used, int a)
 {
 	int	i;
@@ -58,6 +75,23 @@ int				rel_iterator_pos(t_stacks *stacks, int i)
 }
 
 
+int				func_fib(int loops)
+{
+	int		i;
+	int		fib;
+	int		ret;
+
+	i = -1;
+	fib = 1;
+	ret = 0;
+	while (++i < loops)
+	{
+		ret = ret + fib;
+		fib += 1;	
+	}	
+	return (ret);
+}
+
 int				*rel_iterator(t_stacks *stacks, int i)
 {	
 	int		pos;
@@ -110,12 +144,14 @@ int				global_number_dist(t_stacks *stacks, int val, int i)
 	}
 	distleft = i > pos ? i - pos : pos - i;
 	distright = i > pos ? stacks->size - i + pos : (stacks->size - pos) + i;
+	distleft = func_fib(distleft);
+	distright = func_fib(distright);
 	if (i >= pos && i <= pos + doubles)
 	{
 		distleft = 0;
 		distright = 0;
 	}
-	return (distleft < distright ? distleft : distright );
+	return (distleft < distright ? distleft * 3: distright * 3 );
 }
 
 int				dist_inv_b(t_stacks *stacks)
@@ -130,34 +166,54 @@ int				dist_inv_b(t_stacks *stacks)
 	int		posb;
 
 	i = -1;
+	pos = -1;
+	score = global_dist(stacks); 
 	while (++i < stacks->b_used)
 	{
 		val1 = rel_iterator(stacks, i + stacks->a_used + 1);
 		val2 = rel_iterator(stacks, i + stacks->a_used + 2);
 		if (*val1 > *val2)
 		{
-			score = global_number_dist(stacks, *val1, i + stacks->a_used + 1); 
-			score += global_number_dist(stacks, *val2, i + stacks->a_used + 2);
+			ft_putstr("val1 ");
+			ft_putnbr(*val1);
+			ft_putstr("\n");
+			ft_putstr("val2 ");
+			ft_putnbr(*val2);
+			ft_putstr("\n");
+			ft_putstr("score ");
+			ft_putnbr(score);
+			ft_putstr("\n");
 			tmp = *val1;
 			*val1 = *val2;
 			*val2 = tmp;
-			newscore = global_number_dist(stacks, *val1, i + stacks->a_used + 1);
-			newscore += global_number_dist(stacks, *val2, i + stacks->a_used + 2);
+			newscore = global_dist(stacks);
+			ft_putstr("ns ");
+			ft_putnbr(newscore);
+			ft_putstr("\n");
 			tmp = *val1;
 			*val1 = *val2;
 			*val2 = tmp;
 			if (newscore < score)
+			{
 				pos = rel_iterator_pos(stacks, i + stacks->a_used + 1);
+			}
 		}
 	}
-	posb = pos - (stacks->a_used + 1);
-	posb = posb < (stacks->b_used + 1) / 2 ? stacks->b_used - (posb + 1) : posb + 1;
-	if (posb < 0)
-		posb *= -1;
-	ft_putstr("\nposb = ");
-	ft_putnbr(posb);
-	ft_putstr("\n");
-	return(posb);
+	if (pos > -1)
+	{
+		posb = pos - (stacks->a_used + 1);
+		ft_putstr("\nposb = ");
+		ft_putnbr(posb);
+		posb = posb < (stacks->b_used + 1) / 2 ? posb + 1:  stacks->b_used - (posb);
+		if (posb < 0)
+			posb *= -1;
+		ft_putstr("\ndist = ");
+		ft_putnbr(posb);
+		ft_putstr("\n");
+		return(posb);
+	}
+	else
+		return (stacks->size);
 }
 
 int				dist_inv_a(t_stacks *stacks)
@@ -171,19 +227,18 @@ int				dist_inv_a(t_stacks *stacks)
 	int		pos;
 
 	i = -1;
+	pos = -1;
 	while (++i < stacks->a_used)
 	{
 		val1 = rel_iterator(stacks, i);
 		val2 = rel_iterator(stacks, i + 1);
 		if (*val1 > *val2)
 		{
-			score = global_number_dist(stacks, *val1, i); 
-			score += global_number_dist(stacks, *val2, i + 1);
+			score = global_dist(stacks); 
 			tmp = *val1;
 			*val1 = *val2;
 			*val2 = tmp;
-			newscore = global_number_dist(stacks, *val1, i);
-			newscore += global_number_dist(stacks, *val2, i + 1);
+			newscore = global_dist(stacks);
 			tmp = *val1;
 			*val1 = *val2;
 			*val2 = tmp;
@@ -191,11 +246,16 @@ int				dist_inv_a(t_stacks *stacks)
 				pos = rel_iterator_pos(stacks, i);
 		}
 	}
-	ft_putstr("\npos = ");
-	ft_putnbr(pos);
-	ft_putstr("\n");
-	pos = pos < (stacks->a_used + 1) / 2 ? pos + 2 : stacks->a_used - (pos + 1);
-	return (pos < 0 ? pos * -1 : pos);
+	if (pos > -1)
+	{
+		ft_putstr("\npos = ");
+		ft_putnbr(pos);
+		ft_putstr("\n");
+		pos = pos < (stacks->a_used + 1) / 2 ? pos + 2 : stacks->a_used - (pos + 1);
+		return (pos < 0 ? pos * -1 : pos);
+	}
+	else
+		return (stacks->size);
 }
 
 int				dist_to_closest_inv(t_stacks *stacks)
@@ -399,10 +459,9 @@ int				global_dist(t_stacks *stacks)
 
 	dist = 0;
 	i = -1;
-	while(++i < stacks->size - 1 && (val = rel_iterator(stacks, i)))
+	while(++i < stacks->size && (val = rel_iterator(stacks, i)))
 		dist += global_number_dist(stacks, *val, i);
-	print_global(stacks);
-	return (dist);
+	return (dist + (global_num_inv(stacks) * 2));
 }
 
 static int		invs(int *stack, int used)

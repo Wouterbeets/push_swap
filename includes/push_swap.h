@@ -84,6 +84,10 @@ typedef struct	s_stacks
 	int		glob;
 }				t_stacks;
 
+int				global_num_inv(t_stacks	*stacks);
+int				*rel_iterator(t_stacks *stacks, int i);
+void			print_global(t_stacks *stacks);
+int				fib(int loops);
 int				dist_inv_b(t_stacks *stacks);
 int				dist_inv_a(t_stacks *stacks);
 int				dist_to_closest_inv(t_stacks *stacks);

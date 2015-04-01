@@ -102,9 +102,10 @@ int				get_sort_score(t_stacks *stacks, t_op op)
 		ft_putstr("\n");
 		score += global_dist(stacks);
 		print_stacks(stacks);
+		print_global(stacks);
 		ft_putstr("\n");
 		//score += global_ins_index(stacks);
-		score += stacks->sness_a.lowest > stacks->sness_b.lowest ? stacks->size : 0;
+		score += stacks->sness_a.highest > stacks->sness_b.lowest ? stacks->size : 0;
 		//score += stacks->sness_a.highest_dis;
 		//score += stacks->sness_b.lowest_dis;
 		if (score == 0)
