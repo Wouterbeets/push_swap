@@ -339,7 +339,7 @@ t_op_lst	*sort(t_stacks *stacks)
 	stacks->max_op = 1;
 	//ft_putstr("global_dist = ");
 	//ft_putnbr(global_dist(stacks));
-	ft_putstr("\n");
+	//ft_putstr("\n");
 	if (rec_sort(stacks, list, 0, &best))
 	{
 		print_list(stacks->best_lst);
