@@ -38,6 +38,13 @@ typedef struct	s_pivot
 	int	sorted;
 }				t_pivot;
 
+typedef struct	s_layer
+{
+	int	val;
+	int	pos;
+	int	doubles;
+}				t_layer;
+
 typedef struct	s_sort
 {	
 	int	sorted;
@@ -62,28 +69,27 @@ typedef struct	s_sort
 
 typedef struct	s_stacks
 {
-	int		*a;
-	int		*b;
-	int		a_used;
-	int		b_used;
-	int		size;	
-	int		v;
+	t_layer		*a;
+	t_layer		*b;
+	int			a_used;
+	int			b_used;
+	int			size;	
+	int			v;
 	t_pivot		piv;
-	t_sort		sness_a;
-	t_sort		sness_b;
-	t_sort		old_sness_a;
-	t_sort		old_sness_b;
+	t_sort		sness;
+	t_sort		old_sness;
 	t_op_lst	*best_lst;
-	t_op	last_op;
-	t_op	undo;
-	int		bsort;
-	int		asort;
-	int		last_score;
-	int		max_depth;
-	int		max_op;
-	int		glob;
+	t_op		last_op;
+	t_op		undo;
+	int			bsort;
+	int			asort;
+	int			last_score;
+	int			max_depth;
+	int			max_op;
+	int			glob;
 }				t_stacks;
 
+void			final_posistions(t_stacks *stacks);
 int				global_num_inv(t_stacks	*stacks);
 int				*rel_iterator(t_stacks *stacks, int i);
 void			print_global(t_stacks *stacks);
@@ -95,38 +101,37 @@ int				global_ins_index(t_stacks *stacks);
 int				global_rel_ins_index(t_stacks *stacks);
 int				global_dist(t_stacks *stacks);
 int				global_real_dist(t_stacks *stacks);
-int		start(t_stacks *stacks);
-void	print_stacks(t_stacks *stacks);
-void	find_pivot(t_stacks *stacks);
-t_sort	sortedness(int *stack, int used, int piv);
+int				start(t_stacks *stacks);
+void			print_stacks(t_stacks *stacks);
+void			find_pivot(t_stacks *stacks);
+t_sort			sortedness(t_stacks *stacks);
 t_op_lst		*sort(t_stacks *stacks);
 
-int			*copy_arr(int stack_b, t_stacks *stacks);
-t_stacks	*copy_stacks(t_stacks *stacks);
-int		do_op(t_op op, t_stacks *stacks);
-int		do_print_op(t_op op, t_stacks *stacks);
-void	print_list(t_op_lst *list);
-void	print_op(t_op op);
-int		sa(t_stacks *stacks);
-int		sb(t_stacks *stacks);
-int		ss(t_stacks *stacks);
-int		pa(t_stacks *stacks);
-int		pb(t_stacks *stacks);
-int		rrr(t_stacks *stacks);
-int		ra(t_stacks *stacks);
-int		rb(t_stacks *stacks);
-int		rr(t_stacks *stacks);
-int		rra(t_stacks *stacks);
-int		rrb(t_stacks *stacks);
+int				*copy_arr(int stack_b, t_stacks *stacks);
+t_stacks		*copy_stacks(t_stacks *stacks);
+int				do_op(t_op op, t_stacks *stacks);
+int				do_print_op(t_op op, t_stacks *stacks);
+void			print_list(t_op_lst *list);
+void			print_op(t_op op);
+int				sa(t_stacks *stacks);
+int				sb(t_stacks *stacks);
+int				ss(t_stacks *stacks);
+int				pa(t_stacks *stacks);
+int				pb(t_stacks *stacks);
+int				rrr(t_stacks *stacks);
+int				ra(t_stacks *stacks);
+int				rb(t_stacks *stacks);
+int				rr(t_stacks *stacks);
+int				rra(t_stacks *stacks);
+int				rrb(t_stacks *stacks);
 
 
-t_op_lst	*new_lst_item(int op, int score);
-void		add_to_end(t_op_lst *begin, t_op_lst *to_add);
-t_op_lst	*add_to_list(t_op_lst *begin, int op, int score);
-void		free_list(t_op_lst *list);
-t_op_lst	*remove_last(t_op_lst *begin);
-t_op_lst	*copy_list(t_op_lst *begin);
-
-t_op_lst	*sort(t_stacks *stacks);
+t_op_lst		*new_lst_item(int op, int score);
+void			add_to_end(t_op_lst *begin, t_op_lst *to_add);
+t_op_lst		*add_to_list(t_op_lst *begin, int op, int score);
+void			free_list(t_op_lst *list);
+t_op_lst		*remove_last(t_op_lst *begin);
+t_op_lst		*copy_list(t_op_lst *begin);
+t_op_lst		*sort(t_stacks *stacks);
 #endif 
 

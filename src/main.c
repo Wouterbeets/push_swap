@@ -56,18 +56,19 @@ static t_stacks	*check_args(int ac, char **av)
 	ret = (t_stacks *)malloc(sizeof(t_stacks));
 	ret->size = ac - 1;
 	ret->v = set_verbose(av[1], &i, &ret->size); 
-	ret->a = (int *)malloc(sizeof(int) * (ret->size));
-	ret->b = (int *)malloc(sizeof(int) * (ret->size));
+	ret->a = (t_layer *)malloc(sizeof(t_layer) * (ret->size));
+	ret->b = (t_layer *)malloc(sizeof(t_layer) * (ret->size));
 	ret->a_used = ret->size -1;
 	ret->b_used = -1;
 	while (i < ac)
 	{
-		if (!get_number(av[i], &(ret->a[j])))
+		if (!get_number(av[i], &(ret->a[j].val)))
 		{
 			ret->size = -1;
 			return (ret);
 		}
-		ret->b[j] = 0;
+		ret->a[j].pos = -1;
+		ret->b[j].val = 0;
 		i++;
 		j++;
 	}

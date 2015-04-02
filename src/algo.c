@@ -25,9 +25,9 @@ int		calc_piv(t_stacks *stacks, int pivpos)
 	{
 		if (i != pivpos)
 		{
-			if (stacks->a[i] < stacks->a[pivpos])
+			if (stacks->a[i].val < stacks->a[pivpos].val)
 				lower++;
-			if (stacks->a[i] > stacks->a[pivpos])
+			if (stacks->a[i].val > stacks->a[pivpos].val)
 				higher++;
 		}
 		i++;
@@ -49,7 +49,7 @@ void	find_pivot(t_stacks *stacks)
 		{
 			stacks->piv.score = sc;
 			stacks->piv.pos = i;
-			stacks->piv.num = stacks->a[i];
+			stacks->piv.num = stacks->a[i].val;
 		}
 		i++;
 	}

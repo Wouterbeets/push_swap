@@ -13,13 +13,13 @@
 #include "../includes/push_swap.h"
 #include <stdio.h>
 
-static void		print_arr(int *arr, int used)
+static void		print_arr(t_layer *arr, int used)
 {
 	int	i;
 	i = 0;
 	while (i <= used)
 	{
-		ft_putnbr(arr[i]);
+		ft_putnbr(arr[i].val);
 		ft_putstr(" ");
 		i++;
 	}
@@ -38,8 +38,7 @@ int		start(t_stacks *stacks)
 
 	i = 0;
 	find_pivot(stacks);
-	stacks->sness_a = sortedness(stacks->a, stacks->a_used, stacks->piv.num);
-	stacks->sness_b = sortedness(stacks->b, stacks->b_used, stacks->piv.num);
+	stacks->sness = sortedness(stacks);
 	sort(stacks);
 	return (1);
 }

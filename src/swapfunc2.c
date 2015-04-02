@@ -14,7 +14,7 @@
 
 int ra(t_stacks *stacks)
 {
-	int	tmp;
+	t_layer	tmp;
 	int	i;
 
 	if ((i = stacks->a_used + 1) > 1)
@@ -30,7 +30,7 @@ int ra(t_stacks *stacks)
 
 int rb(t_stacks *stacks)
 {
-	int	tmp;
+	t_layer	tmp;
 	int i;
 
 	if ((i = stacks->b_used + 1) > 1)
@@ -62,7 +62,7 @@ int rr(t_stacks *stacks)
 
 int rra(t_stacks *stacks)
 {
-	int	tmp;
+	t_layer	tmp;
 	int	i;
 
 	if (stacks->a_used > 0)
@@ -79,7 +79,7 @@ int rra(t_stacks *stacks)
 
 int rrb(t_stacks *stacks)
 {
-	int	tmp;
+	t_layer	tmp;
 	int	i;
 
 	if (stacks->b_used > 0)

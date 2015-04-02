@@ -15,9 +15,9 @@
 
 int sa(t_stacks *stacks)
 {
-	int		tmp;
+	t_layer		tmp;
 
-	if (stacks->a_used > 0 && stacks->a[stacks->a_used] != stacks->a[stacks->a_used -1])
+	if (stacks->a_used > 0 && stacks->a[stacks->a_used].val != stacks->a[stacks->a_used -1].val)
 	{
 		tmp = stacks->a[stacks->a_used];
 		stacks->a[stacks->a_used] = stacks->a[stacks->a_used - 1];
@@ -29,9 +29,9 @@ int sa(t_stacks *stacks)
 
 int sb(t_stacks *stacks)
 {
-	int		tmp;
+	t_layer		tmp;
 
-	if (stacks->b_used > 0 && stacks->b[stacks->b_used] != stacks->b[stacks->b_used -1])
+	if (stacks->b_used > 0 && stacks->b[stacks->b_used].val != stacks->b[stacks->b_used -1].val)
 	{
 		tmp = stacks->b[stacks->b_used];
 		stacks->b[stacks->b_used] = stacks->b[stacks->b_used - 1];
