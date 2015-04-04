@@ -47,6 +47,7 @@ typedef struct	s_layer
 
 typedef struct	s_sort
 {	
+	int	global_dist;
 	int	sorted;
 	int	inv_sorted;
 	int out_of_place;
@@ -89,6 +90,7 @@ typedef struct	s_stacks
 	int			glob;
 }				t_stacks;
 
+int		num_big_piv(t_layer *stack, int used, int piv);
 void			final_posistions(t_stacks *stacks);
 int				global_num_inv(t_stacks	*stacks);
 int				*rel_iterator(t_stacks *stacks, int i);

@@ -139,21 +139,17 @@ int				get_sort_score(t_stacks *stacks, t_op op)
 	}
 	else
 	{
-		//scorea += stacks->sness_a.highest_dis;
-		scorea += stacks->sness.num_big_piv * stacks->size;
-		//scorea += stacks->sness_a.high_dis;
-
-		//scoreb += stacks->sness_b.lowest_dis;
-		//scoreb += stacks->sness_b.low_dis;
-		scoreb += stacks->sness.num_small_piv * stacks->size;
-		//score += global_rel_ins_index(stacks);
-		score += (global_dist(stacks) * 10);
-		if (op >= 5)
+		//if (op >= 5)
+		//{
+		//	score += stacks->sness.highest_dis;
+		//	score += stacks->sness.lowest_dis;
+		//}
+		//else
 		{
-			score += dist_inv_a(stacks);
-			score += dist_inv_b(stacks);
+			score += stacks->sness.num_big_piv * stacks->size;
+			score += stacks->sness.num_small_piv * stacks->size;
+			//score += (global_dist(stacks));
 		}
-		score = scorea + scoreb + 100;
 	}
 	return (score);
 }
@@ -190,16 +186,16 @@ t_op_lst	*get_list(int *sarra, int max_op)
 	i = -1;
 	best_score = INT_MAX;
 	ret = NULL;
-//	ft_putstr("options are:\n");
-//	j = -1;
-//	while (++j < NUM_OP)
-//	{
-//		print_op(j);
-//		ft_putstr(" ");
-//		ft_putnbr(sarra[j]);
-//		ft_putstr("\n");
-//	}
-//	ft_putstr("\n");
+	//	ft_putstr("options are:\n");
+	//	j = -1;
+	//	while (++j < NUM_OP)
+	//	{
+	//		print_op(j);
+	//		ft_putstr(" ");
+	//		ft_putnbr(sarra[j]);
+	//		ft_putstr("\n");
+	//	}
+	//	ft_putstr("\n");
 	while (++i < max_op)
 	{
 		j = NUM_OP;
@@ -215,14 +211,14 @@ t_op_lst	*get_list(int *sarra, int max_op)
 		{
 			ret = add_to_list(ret, best_op, sarra[best_op]);
 			best_score = INT_MAX;
-//			print_op(best_op);
-//			ft_putstr(" ");
-//			ft_putnbr(sarra[best_op]);
-//			ft_putstr("\n");
+			//			print_op(best_op);
+			//			ft_putstr(" ");
+			//			ft_putnbr(sarra[best_op]);
+			//			ft_putstr("\n");
 		}
 		sarra[best_op] = INT_MAX;
 	}
-//	ft_putstr("\n");
+	//	ft_putstr("\n");
 	return (ret);
 }
 
@@ -234,24 +230,27 @@ static		t_op_lst	*best_ops(t_stacks *stacks)
 
 	i = -1;
 	score = 0;
-	while (++i < NUM_OP)
-		sarra[i] = INT_MAX;
-	i = -1;
-	while (++i < 5)
-		sarra[i] = get_op_sness(i ,stacks);
-	i = -1;
-	while (++i < 5)
-	{
-		if (sarra[i] < stacks->last_score || stacks->last_score == INT_MIN)
-			return (get_list(sarra, stacks->max_op));
-	}
-	i = -1;
-	while (++i < 5)
-		sarra[i] = INT_MAX;
-	i = 4;
-	while (++i < NUM_OP)
-		sarra[i] = get_op_sness(i ,stacks);
-	return (get_list(sarra, stacks->max_op));
+	//if (stacks->piv.sorted != 1)
+	//{
+		while (++i < NUM_OP)
+			sarra[i] = INT_MAX;
+		i = -1;
+		while (++i < 5)
+			sarra[i] = get_op_sness(i ,stacks);
+		i = -1;
+		while (++i < 5)
+		{
+			if (sarra[i] < stacks->last_score || stacks->last_score == INT_MIN)
+				return (get_list(sarra, stacks->max_op));
+		}
+		i = -1;
+		while (++i < 5)
+			sarra[i] = INT_MAX;
+		i = 4;
+		while (++i < NUM_OP)
+			sarra[i] = get_op_sness(i ,stacks);
+		return (get_list(sarra, stacks->max_op));
+	//}
 }
 
 static int	rec_sort(t_stacks *stacks, t_op_lst *begin, int counter, int *best)
@@ -275,18 +274,20 @@ static int	rec_sort(t_stacks *stacks, t_op_lst *begin, int counter, int *best)
 		ft_putstr("xx              rec_sort                      xx\n");
 		ft_putstr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
 		print_list(begin);
-		//print_stacks(stacks);
+		print_stacks(stacks);
 		print_global(stacks);
 	}
 	if (stacks->old_sness.sorted == 1 && stacks->b_used == -1)
 		return (counter);
 	if (stacks->piv.sorted == 0 && stacks->old_sness.num_big_piv == 0 && stacks->old_sness.num_small_piv == 0)
 	{
-	//	ft_putstr("||||||||||||||||||||||||||||||||||||||||||||||||\n");
-	//	ft_putstr("||              piv sorted                    ||\n");
-	//	ft_putstr("||||||||||||||||||||||||||||||||||||||||||||||||\n");
+		ft_putstr("||||||||||||||||||||||||||||||||||||||||||||||||\n");
+		ft_putstr("||              piv sorted                    ||\n");
+		ft_putstr("||||||||||||||||||||||||||||||||||||||||||||||||\n");
 		stacks->piv.sorted = 1;
 		stacks->last_score = get_sort_score(stacks, stacks->last_op);
+		ft_putstr("dist = ");
+		ft_putnbr(global_dist(stacks));
 	}
 	if  (counter >= *best || stacks->max_depth == 0)
 		return (-1);

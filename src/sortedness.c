@@ -303,7 +303,7 @@ int				dist_inv_b(t_stacks *stacks)
 			//ft_putstr("\n");
 			score = global_number_dist(stacks, j); 
 			score += global_number_dist(stacks,j + 1); 
-			score += global_num_inv(stacks);
+			//score += global_num_inv(stacks);
 			//ft_putstr("score ");
 			//ft_putnbr(score);
 			//ft_putstr("\n");
@@ -312,7 +312,7 @@ int				dist_inv_b(t_stacks *stacks)
 			*val2 = tmp;
 			newscore = global_number_dist(stacks, j); 
 			newscore += global_number_dist(stacks,j + 1); 
-			newscore += global_num_inv(stacks);
+			//newscore += global_num_inv(stacks);
 			//ft_putstr("ns ");
 			//ft_putnbr(newscore);
 			//ft_putstr("\n");
@@ -936,7 +936,7 @@ int		highest_dist_to_used(t_layer *stack, int used,int highest)
 	while (--i >= 0)
 	{
 		if (stack[i].val == highest)
-			pos = i;
+			pos = i + 1;
 	}
 	return (pos < score ? pos : score);
 }
