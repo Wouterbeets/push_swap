@@ -73,10 +73,18 @@ typedef struct	s_stacks
 {
 	t_layer		*a;
 	t_layer		*b;
-	int			a_start;
-	int			b_start;
 	int			a_used;
 	int			b_used;
+	int			a_start;
+	int			b_start;
+	int			rinsa;
+	int			rinsb;
+	int			rinsa2;
+	int			rinsb2;
+	int			a_ins_dis2;
+	int			b_ins_dis2;
+	int			a_ins_dis;
+	int			b_ins_dis;
 	int			size;	
 	int			v;
 	t_pivot		piv;
@@ -85,8 +93,6 @@ typedef struct	s_stacks
 	t_op_lst	*best_lst;
 	t_op		last_op;
 	t_op		undo;
-	int			rinsa;
-	int			rinsb;
 	int			last_score;
 	int			max_depth;
 	int			max_op;

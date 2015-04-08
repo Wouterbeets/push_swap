@@ -60,6 +60,14 @@ static t_stacks	*check_args(int ac, char **av)
 	ret->b = (t_layer *)malloc(sizeof(t_layer) * (ret->size));
 	ret->a_used = ret->size -1;
 	ret->b_used = -1;
+	ret->a_ins_dis = 0;
+	ret->a_ins_dis2 = 0;
+	ret->b_ins_dis = 0;
+	ret->b_ins_dis2 = 0;
+	ret->rinsa = 0;
+	ret->rinsb = 0;
+	ret->rinsa2 = 0;
+	ret->rinsb2 = 0;
 	while (i < ac)
 	{
 		if (!get_number(av[i], &(ret->a[j].val)))

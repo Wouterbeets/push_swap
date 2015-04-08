@@ -52,7 +52,7 @@ int	calc_dist_b(int i, int pos, int used, int doubles)
 	if (i > doubles + pos)
 	{
 		dist_inner = (i - (pos + doubles));
-		dist_outer = ((((used - i) + pos)) * -1) - 1;//good for sure
+		dist_outer = ((((used - i) + pos)) * -1) - 1;
 	}
 	dist = abs(dist_inner) < abs(dist_outer) ? dist_inner : dist_outer;
 	return (dist);

@@ -24,6 +24,9 @@ int ra(t_stacks *stacks)
 			stacks->a[i] = stacks->a[i - 1];	
 		stacks->a[0] = tmp;
 		stacks->rinsa--;
+		stacks->rinsa2--;
+		stacks->a_ins_dis--;
+		stacks->a_ins_dis2--;
 		stacks->a_start++;
 		if (stacks->a_start > stacks->a_used)
 			stacks->a_start = 0;
@@ -44,6 +47,9 @@ int rb(t_stacks *stacks)
 			stacks->b[i] = stacks->b[i - 1];	
 		stacks->b[0] = tmp;
 		stacks->rinsb--;
+		stacks->rinsb2--;
+		stacks->b_ins_dis--;
+		stacks->b_ins_dis2--;
 		stacks->b_start++;
 		if (stacks->b_start > stacks->b_used)
 			stacks->b_start = 0;
@@ -81,6 +87,9 @@ int rra(t_stacks *stacks)
 			stacks->a[i] = stacks->a[i + 1];
 		stacks->a[stacks->a_used] = tmp;
 		stacks->rinsa++;
+		stacks->rinsa2++;
+		stacks->a_ins_dis++;
+		stacks->a_ins_dis2++;
 		stacks->a_start--;
 		if (stacks->a_start < 0)
 			stacks->a_start = stacks->a_used;
@@ -102,6 +111,9 @@ int rrb(t_stacks *stacks)
 			stacks->b[i] = stacks->b[i + 1];
 		stacks->b[stacks->b_used] = tmp;
 		stacks->rinsb++;
+		stacks->rinsb2++;
+		stacks->b_ins_dis++;
+		stacks->b_ins_dis2++;
 		stacks->b_start--;
 		if (stacks->b_start < 0)
 			stacks->b_start = stacks->b_used;

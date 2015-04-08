@@ -19,7 +19,7 @@ int	calc_dist_a(int i, int pos, int used, int doubles)
 	if (i > doubles + pos)
 	{
 		dist_inner = (i - (pos + doubles)) + 1;
-		dist_outer = ((used - i) + pos) * -1;
+		dist_outer = (((used - i) + pos) * -1) + 1;
 	}
 	dist = abs(dist_inner) < abs(dist_outer) ? dist_inner : dist_outer;
 	return (dist);
