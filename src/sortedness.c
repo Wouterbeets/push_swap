@@ -23,65 +23,6 @@ t_layer				*iterator(t_stacks *stacks, int i)
 	}
 	return (NULL);
 }
-
-
-int				find_lowest_sub(t_layer	*stack, int used)
-{
-	int	i;
-	int	min;
-	int	pos;
-
-	i = -1;
-	pos = -1;
-	min = INT_MAX;
-	while (++i <= used)
-	{
-		if (min > stack[i].val)
-		{
-			min = stack[i].val;
-			pos = i;
-		}
-	}
-	if (used > -1 && pos == 0 && stack[used].val == min)
-	{
-		while(stack[--used].val == min)
-			;
-		return (used + 1);
-	}
-	return (pos > -1 ? pos : 0);
-}
-//
-//int				rel_iterator_pos(t_stacks *stacks, int i)
-//{	
-//	int			pos;
-//	int			posa;
-//	int			posb;
-//
-//	posa = find_lowest_sub(stacks->a, stacks->a_used, 1);
-//	posb = find_lowest_sub(stacks->b, stacks->b_used, 0);
-//	if (i < stacks->size)
-//	{
-//		if (i <= stacks->a_used)
-//		{
-//			if (posa + i > stacks->a_used)
-//				pos = posa + (i - (stacks->a_used + 1));
-//			else 
-//				pos = posa + i;
-//			return (pos);
-//		}
-//		else
-//		{
-//			if (posb - (i - (stacks->a_used + 1)) > -1) 
-//				pos = posb - (i - (stacks->a_used + 1));
-//			else
-//				pos = (posb + stacks->b_used + 1) - (i - (stacks->a_used + 1));
-//			return (pos + stacks->a_used + 1);
-//		}
-//	}
-//	return (INT_MIN);
-//}
-
-
 int				func_fib(int loops)
 {
 	int		i;
@@ -98,7 +39,6 @@ int				func_fib(int loops)
 	}	
 	return (ret);
 }
-
 int				rel_iterator_pos(t_stacks *stacks, int i)
 {	
 	int		pos;
@@ -106,8 +46,8 @@ int				rel_iterator_pos(t_stacks *stacks, int i)
 	int		posb;
 	t_layer		*stack;
 
-	posa = find_lowest_sub(stacks->a, stacks->a_used);
-	posb = find_lowest_sub(stacks->b, stacks->b_used);
+	posa = stacks->a_start;
+	posb = stacks->b_start;
 	stack = stacks->a;
 	if (i < stacks->size)
 	{
@@ -130,7 +70,6 @@ int				rel_iterator_pos(t_stacks *stacks, int i)
 	return (INT_MIN);
 }
 
-
 t_layer				*rel_iterator_t(t_stacks *stacks, int i)
 {	
 	int		pos;
@@ -138,8 +77,8 @@ t_layer				*rel_iterator_t(t_stacks *stacks, int i)
 	int		posb;
 	t_layer		*stack;
 
-	posa = find_lowest_sub(stacks->a, stacks->a_used);
-	posb = find_lowest_sub(stacks->b, stacks->b_used);
+	posa = stacks->a_start;
+	posb = stacks->b_start;
 	stack = stacks->a;
 	if (i < stacks->size)
 	{
@@ -163,39 +102,6 @@ t_layer				*rel_iterator_t(t_stacks *stacks, int i)
 	return (&stack[0]);
 }
 
-//
-//int				*rel_iterator(t_stacks *stacks, int i)
-//{	
-//	int		pos;
-//	int		posa;
-//	int		posb;
-//	t_layer		*stack;
-//
-//	posa = find_lowest_sub(stacks->a, stacks->a_used);
-//	posb = find_lowest_sub(stacks->b, stacks->b_used);
-//	if (i < stacks->size)
-//	{
-//		if (i <= stacks->a_used)
-//		{
-//			if (posa + i > stacks->a_used)
-//				pos = posa + (i - (stacks->a_used + 1));
-//			else 
-//				pos = posa + i;
-//			stack = stacks->a;
-//		}
-//		else
-//		{
-//			if (posb - (i - (stacks->a_used + 1)) > -1) 
-//				pos = posb - (i - (stacks->a_used + 1));
-//			else
-//				pos = (posb + stacks->b_used + 1) - (i - (stacks->a_used + 1));
-//			stack = stacks->b;
-//		}
-//		return (&stack[pos].val);
-//	}
-//	return (NULL);
-//}
-
 void			numb_final_pos(t_stacks *stacks, int i)
 {
 	int			j;
@@ -206,6 +112,7 @@ void			numb_final_pos(t_stacks *stacks, int i)
 	val = iterator(stacks, i);
 	val->pos = 0;
 	val->doubles = 0;
+	val->dist = INT_MAX;
 	while (++j < stacks->size)
 	{
 		if (i != j)
@@ -216,6 +123,7 @@ void			numb_final_pos(t_stacks *stacks, int i)
 			if (val->val == val2->val)
 				val->doubles++;
 		}
+		
 	}
 }
 
@@ -256,9 +164,7 @@ int				global_number_dist(t_stacks *stacks, int i)
 
 	num = rel_iterator_t(stacks, i);
 	if (i >= num->pos && i <= num->pos + num->doubles)
-	{
 		return (0);
-	}
 	else
 	{
 		dist_inner = i - num->pos;

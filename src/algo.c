@@ -54,3 +54,26 @@ void	find_pivot(t_stacks *stacks)
 		i++;
 	}
 }
+
+static int		get_op_piv(t_stacks *stacks)
+{
+	if (stacks->a[stacks->a_used].val > stacks->piv.num)
+	{
+		stacks->sness.num_big_piv--;
+		return (PB);
+	}
+	else
+		return (RA);
+}
+
+
+void	divide_by_pivot(t_stacks *stacks)
+{
+	int	i;
+
+	i = 0;
+	find_pivot(stacks);
+	stacks->sness = sortedness(stacks);
+	while (stacks->sness.num_big_piv && ++i)
+		do_op(get_op_piv(stacks), stacks);
+}

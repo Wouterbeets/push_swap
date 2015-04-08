@@ -7,7 +7,9 @@ FILES	= main.c\
 		  algo.c\
 		  sortedness.c\
 		  sort.c\
-		  list.c
+		  list.c\
+		  dist_ins_a.c\
+		  dist_ins_b.c
 SRC		= $(addprefix src/, $(FILES))
 OBJ		= $(SRC:src/%.c=.obj/%.o)
 FLAGS	= -Wall -Werror -Wextra

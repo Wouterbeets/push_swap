@@ -43,6 +43,7 @@ typedef struct	s_layer
 	int	val;
 	int	pos;
 	int	doubles;
+	int	dist;
 }				t_layer;
 
 typedef struct	s_sort
@@ -72,6 +73,8 @@ typedef struct	s_stacks
 {
 	t_layer		*a;
 	t_layer		*b;
+	int			a_start;
+	int			b_start;
 	int			a_used;
 	int			b_used;
 	int			size;	
@@ -82,14 +85,24 @@ typedef struct	s_stacks
 	t_op_lst	*best_lst;
 	t_op		last_op;
 	t_op		undo;
-	int			bsort;
-	int			asort;
+	int			rinsa;
+	int			rinsb;
 	int			last_score;
 	int			max_depth;
 	int			max_op;
 	int			glob;
 }				t_stacks;
 
+
+int		abs(int num);
+int		calc_dist_a(int i, int pos, int used, int doubles);
+int		calc_dist_b(int i, int pos, int used, int doubles);
+void	print_stack_sorted(t_layer *stack, int used);
+void	divide_by_pivot(t_stacks *stacks);
+int		dist_closest_ins_num_b(t_layer *stack, int b_used, int a_used, int start_pos);
+int		dist_closest_ins_num_a(t_layer *stack, int used, int start_pos);
+int				find_lowest_sub_a(t_layer	*stack, int used);
+int				find_lowest_sub_b(t_layer	*stack, int used);
 int		num_big_piv(t_layer *stack, int used, int piv);
 void			final_posistions(t_stacks *stacks);
 int				global_num_inv(t_stacks	*stacks);
