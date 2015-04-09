@@ -16,7 +16,7 @@ t_layer				*iterator(t_stacks *stacks, int i)
 		}
 		else
 		{
-			pos = stacks->b_used - (i - stacks->a_used);
+			pos = stacks->b_used - (i - (stacks->a_used + 1));
 			stack = stacks->b;
 		}
 		return (&stack[pos]);
@@ -112,7 +112,6 @@ void			numb_final_pos(t_stacks *stacks, int i)
 	val = iterator(stacks, i);
 	val->pos = 0;
 	val->doubles = 0;
-	val->dist = INT_MAX;
 	while (++j < stacks->size)
 	{
 		if (i != j)
@@ -123,8 +122,38 @@ void			numb_final_pos(t_stacks *stacks, int i)
 			if (val->val == val2->val)
 				val->doubles++;
 		}
-		
 	}
+}
+
+
+void			numb_final_pos_rel(t_stacks *stacks, int i)
+{
+	int			j;
+	t_layer		*val;
+	t_layer		*val2;
+
+	j = -1;
+	val = rel_iterator_t(stacks, i);
+	val->dist = 0;
+	if (val->rel_pos == -1)
+	{
+		val->rel_pos = 0;
+		while (++j < stacks->size)
+		{
+			if (i != j)
+			{
+				val2 = rel_iterator_t(stacks, j);
+				if (val->val > val2->val)
+					val->rel_pos++;
+			}
+		}
+	}
+	if (i >= val->rel_pos && i <= val->rel_pos + val->doubles)
+		val->dist = 0;
+	else if (i < val->rel_pos)
+		val->dist = (val->rel_pos - i) * -1;
+	else
+		val->dist = i - (val->rel_pos + val->doubles);
 }
 
 void			final_posistions(t_stacks *stacks)
@@ -133,7 +162,20 @@ void			final_posistions(t_stacks *stacks)
 
 	i = -1;
 	while (++i < stacks->size)
+	{
 		numb_final_pos(stacks, i);
+	}
+}		
+
+void			final_posistions_rel(t_stacks *stacks)
+{
+	int		i;
+
+	i = -1;
+	while (++i < stacks->size)
+	{
+		numb_final_pos_rel(stacks, i);
+	}
 }
 
 
@@ -267,7 +309,7 @@ int				dist_inv_a(t_stacks *stacks)
 			//ft_putstr("val2 ");
 			//ft_putnbr(val2->val);
 			//ft_putstr("\n");
-	
+
 			score = global_number_dist(stacks, i); 
 			score += global_number_dist(stacks, i + 1); 
 			tmp = *val1;
@@ -346,6 +388,16 @@ void			print_global(t_stacks *stacks)
 			ft_putstr(" | ");
 		ft_putstr(" ");
 		i++;
+	}
+	ft_putstr("\n");
+	i = -1;
+	while (++i < stacks->size)
+	{
+		tmp = rel_iterator_t(stacks, i);
+		ft_putnbr(tmp->dist);
+		if (i == stacks->a_used)
+			ft_putstr(" | ");
+		ft_putstr(" ");
 	}
 	ft_putstr("\n");
 	i = -1;

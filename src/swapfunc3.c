@@ -42,6 +42,7 @@ void	print_op(t_op op)
 		"pb\0", "ra\0", "rb\0", "rr\0", "rra\0", "rrb\0", "rrr\0"};
 
 	ft_putstr(str[op]);
+	ft_putstr(" ");
 }
 
 int		do_print_op(t_op op, t_stacks *stacks)

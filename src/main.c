@@ -76,10 +76,13 @@ static t_stacks	*check_args(int ac, char **av)
 			return (ret);
 		}
 		ret->a[j].pos = -1;
+		ret->a[j].rel_pos = -1;
 		ret->b[j].val = 0;
+		ret->a[i].dist = INT_MAX;
 		i++;
 		j++;
 	}
+	ret->best_lst = NULL;
 	return (ret);
 }
 

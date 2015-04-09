@@ -42,6 +42,7 @@ typedef struct	s_layer
 {
 	int	val;
 	int	pos;
+	int	rel_pos;
 	int	doubles;
 	int	dist;
 }				t_layer;
@@ -110,6 +111,7 @@ int		dist_closest_ins_num_a(t_layer *stack, int used, int start_pos);
 int				find_lowest_sub_a(t_layer	*stack, int used);
 int				find_lowest_sub_b(t_layer	*stack, int used);
 int		num_big_piv(t_layer *stack, int used, int piv);
+void			final_posistions_rel(t_stacks *stacks);
 void			final_posistions(t_stacks *stacks);
 int				global_num_inv(t_stacks	*stacks);
 int				*rel_iterator(t_stacks *stacks, int i);

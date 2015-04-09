@@ -34,51 +34,45 @@ int	abs(int num)
 {
 	return (num > 0 ? num : num * -1);
 }
-
-int	calc_dist_b(int i, int pos, int used, int doubles)
-{
-	int		dist_inner;
-	int		dist_outer;
-	int		dist;
-
-	dist = 0;
-	dist_inner = 0;
-	dist_outer = 0;
-	if (i < pos)
-	{
-		dist_inner = ((pos - i)) * -1;
-		dist_outer = ((used - pos) + i);
-	}
-	if (i > doubles + pos)
-	{
-		dist_inner = (i - (pos + doubles));
-		dist_outer = ((((used - i) + pos)) * -1) - 1;
-	}
-	dist = abs(dist_inner) < abs(dist_outer) ? dist_inner : dist_outer;
-	return (dist);
-}
+//
+//int	calc_dist_b(int i, int pos, int used, int doubles)
+//{
+//	int		dist_inner;
+//	int		dist_outer;
+//	int		dist;
+//
+//	dist = 0;
+//	dist_inner = 0;
+//	dist_outer = 0;
+//	if (i < pos)
+//	{
+//		dist_inner = ((pos - i)) * -1;
+//		dist_outer = ((used - pos) + i);
+//	}
+//	if (i > doubles + pos)
+//	{
+//		dist_inner = (i - (pos + doubles)) - 1;
+//		dist_outer = ((((used - i) + pos)) * -1) - 1;
+//	}
+//	dist = abs(dist_inner) < abs(dist_outer) ? dist_inner : dist_outer;
+//	return (dist);
+//}
 
 static int	dist_right_b(t_layer *stack, int b_used, int a_used, int start_pos)
 {
 	int		i;
-	int		pos;
 	int		dist;
 
 	i = -1;
-	pos = INT_MAX;
 	dist = 0;
+	(void)start_pos;
 	while (++i <= b_used / 2)
 	{
 		if (stack[i].pos <= a_used)
 			continue;
-		pos = (((stack[i].pos - (a_used + 1)) * -1) + b_used) - (b_used - start_pos);
-		pos = pos < 0 ? pos + b_used : pos;
-		dist = calc_dist_b(i, pos, b_used, stack[i].doubles);	
+		dist = stack[i].dist;
 		if (abs(dist) > 3)
-		{
-			stack[i].dist = dist;
 			return (i + 1);
-		}
 	}
 	return (INT_MAX);
 
@@ -88,25 +82,18 @@ static int	dist_right_b(t_layer *stack, int b_used, int a_used, int start_pos)
 static int	dist_left_b(t_layer *stack, int b_used, int a_used, int start_pos)
 {
 	int		i;
-	int		pos;
 	int		dist;
 
 	i = b_used + 1;
-	pos = INT_MAX;
 	dist = 0;
+	(void)start_pos;
 	while (--i > b_used / 2)
 	{
 		if (stack[i].pos <= a_used)
 			continue;
-		pos = (((stack[i].pos - (a_used + 1)) * -1) + b_used) - (b_used - start_pos);
-		pos = pos < 0 ? pos + b_used : pos;
-		dist = calc_dist_b(i, pos, b_used, stack[i].doubles);	
+		dist = stack[i].dist;
 		if (abs(dist) > 3)
-		{
-			stack[i].dist = dist;
 			return (b_used - i);
-		}
-		i--;
 	}
 	return (INT_MAX);
 }

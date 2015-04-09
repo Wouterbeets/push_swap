@@ -94,66 +94,58 @@ void	print_stats(t_stacks *stacks)
 	ft_putnbr(stacks->rinsb2);
 	ft_putstr("\n");
 }
-
+void	do_move(t_stacks *stacks, int *ra, int *rb)
+{
+	while (*ra != 0 || *rb != 0)
+		do_print_op(get_op(*ra, *rb), stacks);
+}
 void	ins_prepare(t_stacks *stacks)
 {
-	
+	int	nil;
+
+	nil = 0;
 	stacks->rinsa = dist_closest_ins_num_a(stacks->a, stacks->a_used, stacks->a_start);
-	stacks->rinsb = dist_closest_ins_num_b(stacks->b, stacks->b_used, stacks->a_used, stacks->b_start);
-	print_stats(stacks);
-	ft_putstr("\n------------double_move------------------------\n");
-	while (stacks->rinsa != 0 || stacks->rinsb != 0)
-		do_print_op(get_op(stacks->rinsa, stacks->rinsb), stacks);
+	stacks->rinsb = dist_closest_ins_num_b(stacks->b, stacks->b_used, stacks->a_used, stacks->a_start);
+	do_move(stacks, &stacks->rinsa, &stacks->rinsb);
+	final_posistions_rel(stacks);
+	stacks->a_ins_dis = stacks->a[stacks->a_used].dist;
+	stacks->b_ins_dis = stacks->b[stacks->b_used].dist;
 	do_print_op(PB, stacks);
 	do_print_op(SB, stacks);
 	do_print_op(PA, stacks);
-	stacks->a_ins_dis = stacks->b[stacks->b_used].dist;
-	stacks->b_ins_dis = stacks->a[stacks->a_used].dist;
-	print_stats(stacks);
-	ft_putstr("\n------------move_to_next_ins_area--------------\n");
-	while (stacks->a_ins_dis != 0 || stacks->b_ins_dis != 0)
-		do_print_op(get_op(stacks->a_ins_dis, stacks->b_ins_dis), stacks);
-	stacks->rinsa2 = dist_closest_ins_num_a(stacks->a, stacks->a_used, stacks->a_start);
-	stacks->rinsb2 = dist_closest_ins_num_b(stacks->b, stacks->b_used, stacks->a_used, stacks->b_start);
-	print_stats(stacks);
-	ft_putstr("\n------------find_new_to_moves--------------\n");
-	while (stacks->rinsa2 != 0 || stacks->rinsb2 != 0)
-		do_print_op(get_op(stacks->rinsa2, stacks->rinsb2), stacks);
-	do_print_op(PB, stacks);
-	do_print_op(SB, stacks);
+	do_move(stacks, &stacks->a_ins_dis, &nil);
 	do_print_op(PA, stacks);
-	stacks->a_ins_dis2 = stacks->b[stacks->b_used].dist;
-	stacks->b_ins_dis2 = stacks->a[stacks->a_used].dist;
-	print_stats(stacks);
-//	ft_putstr("\n------------move_to_insest_into_a--------------\n");
-//	while (stacks->a_ins_dis != 0 || stacks->rinsb != 0)
-//		do_print_op(get_op(stacks->a_ins_dis, stacks->rinsb), stacks);
-//	do_print_op(PA, stacks);
-//	ft_putstr("\nsorted\n");
-//	print_stack_sorted(stacks->a, stacks->a_used);
-//	stacks->rinsa = dist_closest_ins_num_a(stacks->a, stacks->a_used, stacks->a_start);
-//	ft_putstr("\n------------move_to_get_new_a--------------\n");
-//	while (stacks->rinsa != 0)
-//		do_print_op(get_op(stacks->rinsa, 0), stacks);
-//	do_print_op(PB, stacks);
-//	stacks->a_ins_dis = stacks->b[stacks->b_used].dist;
+	do_move(stacks, &stacks->rinsa, &stacks->b_ins_dis);
+	do_print_op(PB, stacks);
+	final_posistions_rel(stacks);
 }
 
 int		do_ins(t_stacks *stacks)
 {
+	ft_putstr("\n------------check-------------\n");
 	print_global(stacks);
-	print_stats(stacks);
+	ft_putstr("\n------------sorted-------------\n");
+	print_stack_sorted(stacks->a, stacks->a_used);
+	print_stack_sorted(stacks->b, stacks->b_used);
+	//while (stacks->a_ins_dis2 != INT_MAX && stacks->a_ins_dis != INT_MAX)
+	//{
+	//	do_move(stacks, &stacks->a_ins_dis, &stacks->rinsb);	
+	//	do_print_op(PA, stacks);
+	//}
+	//stacks->a[stacks->a_used].dist = check_if_in_block();
 	return (0);
 }
 
 int		start(t_stacks *stacks)
 {
 	print_stacks(stacks);
-	final_posistions(stacks);
 	divide_by_pivot(stacks);
+	print_stacks(stacks);
 	stacks->a_start = find_lowest_sub_a(stacks->a, stacks->a_used);
 	stacks->b_start = find_lowest_sub_b(stacks->b, stacks->b_used);
-	print_stacks(stacks);
+	final_posistions(stacks);
+	final_posistions_rel(stacks);
+	do_ins(stacks);
 	ins_prepare(stacks);
 	do_ins(stacks);
 	//sort(stacks);
