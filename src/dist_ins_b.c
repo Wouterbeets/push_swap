@@ -58,7 +58,7 @@ int	abs(int num)
 //	return (dist);
 //}
 
-static int	dist_right_b(t_layer *stack, int b_used, int a_used, int start_pos)
+static int	dist_right_b(t_layer *stack, int b_used, int a_used, int start_pos, t_stacks *stacks)
 {
 	int		i;
 	int		dist;
@@ -68,18 +68,24 @@ static int	dist_right_b(t_layer *stack, int b_used, int a_used, int start_pos)
 	(void)start_pos;
 	while (++i <= b_used / 2)
 	{
-		if (stack[i].pos <= a_used)
+		if (stack[i].val <= stacks->piv.num)
 			continue;
-		dist = stack[i].dist;
+		dist = calc_ins_dis_b(stack[i].rel_pos, b_used, a_used + 1, stacks->b_start, stacks);
+		dist += i;
 		if (abs(dist) > 3)
+		{
+			ft_putstr(" b=");
+			ft_putnbr(dist);
+			ft_putstr(" ");
 			return (i + 1);
+		}
 	}
 	return (INT_MAX);
 
 
 }
 
-static int	dist_left_b(t_layer *stack, int b_used, int a_used, int start_pos)
+static int	dist_left_b(t_layer *stack, int b_used, int a_used, int start_pos, t_stacks *stacks)
 {
 	int		i;
 	int		dist;
@@ -89,24 +95,30 @@ static int	dist_left_b(t_layer *stack, int b_used, int a_used, int start_pos)
 	(void)start_pos;
 	while (--i > b_used / 2)
 	{
-		if (stack[i].pos <= a_used)
+		if (stack[i].val <= stacks->piv.num)
 			continue;
-		dist = stack[i].dist;
+		dist = calc_ins_dis_b(stack[i].rel_pos, b_used, a_used + 1, stacks->b_start, stacks);
+		dist -= (b_used - i);
 		if (abs(dist) > 3)
+		{
+			ft_putstr(" b=");
+			ft_putnbr(dist);
+			ft_putstr(" ");
 			return (b_used - i);
+		}
 	}
 	return (INT_MAX);
 }
 
-int		dist_closest_ins_num_b(t_layer *stack, int b_used, int a_used, int start_pos)
+int		dist_closest_ins_num_b(t_stacks *stacks)
 {
 	int		distleft;
 	int		distright;
 	
-	distleft = dist_left_b(stack, b_used, a_used, start_pos);
-	distright = dist_right_b(stack, b_used, a_used, start_pos);
+	distleft = dist_left_b(stacks->b, stacks->b_used, stacks->a_used, stacks->b_start, stacks);
+	distright = dist_right_b(stacks->b, stacks->b_used, stacks->a_used, stacks->b_start, stacks);
 	if (distleft == INT_MAX && distright == INT_MAX)
-		return (0);
+		return (INT_MAX);
 	return (distleft < distright ? distleft : -distright);
 }
 

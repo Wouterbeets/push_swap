@@ -101,17 +101,19 @@ typedef struct	s_stacks
 }				t_stacks;
 
 
-int		abs(int num);
-int		calc_dist_a(int i, int pos, int used, int doubles);
-int		calc_dist_b(int i, int pos, int used, int doubles);
-t_layer				*rel_iterator_t(t_stacks *stacks, int i);
-void	print_stack_sorted(t_layer *stack, int used);
-void	divide_by_pivot(t_stacks *stacks);
-int		dist_closest_ins_num_b(t_layer *stack, int b_used, int a_used, int start_pos);
-int		dist_closest_ins_num_a(t_layer *stack, int used, int start_pos);
+int				abs(int num);
+int				calc_dist_a(int i, int pos, int used, int doubles);
+int				calc_dist_b(int i, int pos, int used, int doubles);
+int		calc_ins_dis(int rel_pos, int used, int start_pos,t_stacks *stacks);
+t_layer			*rel_iterator_t(t_stacks *stacks, int i);
+void			print_stack_sorted(t_layer *stack, int used);
+void			divide_by_pivot(t_stacks *stacks);
+int				dist_closest_ins_num_b(t_stacks *stack);
+int				calc_ins_dis_b(int rel_pos, int used, int a_used, int start_pos, t_stacks *stacks);
+int				dist_closest_ins_num_a(t_stacks *stack);
 int				find_lowest_sub_a(t_layer	*stack, int used);
 int				find_lowest_sub_b(t_layer	*stack, int used);
-int		num_big_piv(t_layer *stack, int used, int piv);
+int				num_big_piv(t_layer *stack, int used, int piv);
 void			final_posistions_rel(t_stacks *stacks);
 void			final_posistions(t_stacks *stacks);
 int				global_num_inv(t_stacks	*stacks);

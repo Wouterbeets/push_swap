@@ -77,7 +77,7 @@ int				find_lowest_sub_b(t_layer	*stack, int used)
 	return (pos > -1 ? pos : 0);
 }
 
-static int	dist_right_a(t_layer *stack, int used, int start_pos)
+static int	dist_right_a(t_layer *stack, int used, int start_pos, t_stacks *stacks)
 {
 	int		i;
 	int		dist;
@@ -87,16 +87,22 @@ static int	dist_right_a(t_layer *stack, int used, int start_pos)
 	(void)start_pos;
 	while (++i <= used / 2)
 	{
-		if (stack[i].pos > used)
+		if (stack[i].val > stacks->piv.num)
 			continue;
-		dist = stack[i].dist;
+		dist = calc_ins_dis(stack[i].rel_pos, used, start_pos, stacks);
+		dist += i;
 		if (abs(dist) > 3)
+		{
+			ft_putstr(" a=");
+			ft_putnbr(dist);
+			ft_putstr(" ");
 			return (i + 1);
+		}
 	}
 	return (INT_MAX);
 }
 
-static int	dist_left_a(t_layer *stack, int used, int start_pos)
+static int	dist_left_a(t_layer *stack, int used, int start_pos, t_stacks *stacks)
 {
 	int		i;
 	int		dist;
@@ -106,24 +112,30 @@ static int	dist_left_a(t_layer *stack, int used, int start_pos)
 	(void)start_pos;
 	while (--i > used / 2)
 	{
-		if (stack[i].pos > used)
+		if (stack[i].val > stacks->piv.num)
 			continue;
-		dist = stack[i].dist;
+		dist = calc_ins_dis(stack[i].rel_pos, used, start_pos, stacks);
+		dist -= used - i;
 		if (abs(dist) > 3)
+		{
+			ft_putstr(" a=");
+			ft_putnbr(dist);
+			ft_putstr(" ");
 			return (used - i);
+		}
 	}
 	return (INT_MAX);
 }
 
-int		dist_closest_ins_num_a(t_layer *stack, int used, int start_pos)
+int		dist_closest_ins_num_a(t_stacks *stacks)
 {
 	int		distleft;
 	int		distright;
 
-	distleft = dist_left_a(stack, used, start_pos);
-	distright = dist_right_a(stack, used, start_pos);
+	distleft = dist_left_a(stacks->a, stacks->a_used, stacks->a_start, stacks);
+	distright = dist_right_a(stacks->a, stacks->a_used, stacks->a_start, stacks);
 	if (distleft == INT_MAX && distright == INT_MAX)
-		return (0);
+		return (INT_MAX);
 	return (distleft < distright ? distleft : -distright);
 }
 
