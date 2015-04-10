@@ -58,10 +58,7 @@ void	find_pivot(t_stacks *stacks)
 static int		get_op_piv(t_stacks *stacks)
 {
 	if (stacks->a[stacks->a_used].val > stacks->piv.num)
-	{
-		stacks->sness.num_big_piv--;
 		return (PB);
-	}
 	else
 		return (RA);
 }

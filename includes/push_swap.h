@@ -104,6 +104,7 @@ typedef struct	s_stacks
 int		abs(int num);
 int		calc_dist_a(int i, int pos, int used, int doubles);
 int		calc_dist_b(int i, int pos, int used, int doubles);
+t_layer				*rel_iterator_t(t_stacks *stacks, int i);
 void	print_stack_sorted(t_layer *stack, int used);
 void	divide_by_pivot(t_stacks *stacks);
 int		dist_closest_ins_num_b(t_layer *stack, int b_used, int a_used, int start_pos);

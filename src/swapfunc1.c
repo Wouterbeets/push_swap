@@ -64,12 +64,16 @@ int pa(t_stacks *stacks)
 		stacks->a[stacks->a_used + 1] = stacks->b[stacks->b_used];
 		stacks->a_used++;
 		stacks->b_used--;
+		if (stacks->a[stacks->a_used].val > stacks->piv.num)
+			stacks->sness.num_big_piv++;
+		else
+			stacks->sness.num_small_piv--;
 		stacks->rinsa += stacks->rinsa < 0 ? 0 : 1;
 		stacks->rinsa2 += stacks->rinsa2 < 0 ? 0 : 1;
-		//stacks->a_ins_dis += stacks->a_ins_dis < 0 ? 0 : 1;
-		//stacks->a_ins_dis2 += stacks->a_ins_dis2 < 0 ? 0 : 1;
-		//stacks->rinsb -= stacks->rinsb < 0 ? 0 : 1;
-		//stacks->rinsb2 -= stacks->rinsb2 < 0 ? 0 : 1;
+		stacks->a_ins_dis += stacks->a_ins_dis < 0 ? 0 : 1;
+		stacks->a_ins_dis2 += stacks->a_ins_dis2 < 0 ? 0 : 1;
+		stacks->rinsb -= stacks->rinsb < 0 ? 0 : 1;
+		stacks->rinsb2 -= stacks->rinsb2 < 0 ? 0 : 1;
 		stacks->b_ins_dis -= stacks->b_ins_dis < 0 ? 0 : 1;
 		stacks->b_ins_dis2 -= stacks->b_ins_dis2 < 0 ? 0 : 1;
 		return (PB);
@@ -84,14 +88,18 @@ int pb(t_stacks *stacks)
 		stacks->b[stacks->b_used + 1] = stacks->a[stacks->a_used];
 		stacks->b_used++;
 		stacks->a_used--;
-		//stacks->rinsa -= stacks->rinsa < 0 ? 0 : 1;
-		//stacks->rinsa2 -= stacks->rinsa2 < 0 ? 0 : 1;
-		//stacks->a_ins_dis -= stacks->a_ins_dis < 0 ? 0 : 1;
-		//stacks->a_ins_dis2 -= stacks->a_ins_dis2 < 0 ? 0 : 1;
+		if (stacks->b[stacks->b_used].val <= stacks->piv.num)
+			stacks->sness.num_small_piv++;
+		else
+			stacks->sness.num_big_piv--;
+		stacks->rinsa -= stacks->rinsa < 0 ? 0 : 1;
+		stacks->rinsa2 -= stacks->rinsa2 < 0 ? 0 : 1;
+		stacks->a_ins_dis -= stacks->a_ins_dis < 0 ? 0 : 1;
+		stacks->a_ins_dis2 -= stacks->a_ins_dis2 < 0 ? 0 : 1;
 		stacks->rinsb += stacks->rinsb < 0 ? 0 : 1;
 		stacks->rinsb2 += stacks->rinsb2 < 0 ? 0 : 1;
-		//stacks->b_ins_dis += stacks->b_ins_dis < 0 ? 0 : 1;
-		//stacks->b_ins_dis2 += stacks->b_ins_dis2 < 0 ? 0 : 1;
+		stacks->b_ins_dis += stacks->b_ins_dis < 0 ? 0 : 1;
+		stacks->b_ins_dis2 += stacks->b_ins_dis2 < 0 ? 0 : 1;
 		return (PA);
 	}
 	return (-1);

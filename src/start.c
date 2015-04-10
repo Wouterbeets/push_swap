@@ -99,25 +99,143 @@ void	do_move(t_stacks *stacks, int *ra, int *rb)
 	while (*ra != 0 || *rb != 0)
 		do_print_op(get_op(*ra, *rb), stacks);
 }
+
+int		nums_smaller_piv_range(t_stacks *stacks, int i, int end)
+{
+	int	smalls;
+	t_layer		*val;
+
+	smalls = 0;
+	while (i <= end)
+	{
+		val = rel_iterator_t(stacks, i);
+		if (val->val <= stacks->piv.num)
+			smalls++;
+		i++;
+	}
+	return (smalls);
+}
+
+int		nums_bigger_piv_range(t_stacks *stacks, int i, int end)
+{
+	int	bigs;
+	t_layer		*val;
+
+	bigs = 0;
+	while (i <= end)
+	{
+		val = rel_iterator_t(stacks, i);
+		if (val->val > stacks->piv.num)
+			bigs++;
+		i++;
+	}
+	return (bigs);
+}
+
+int		calc_ins_dis_b(int rel_pos, int used, int a_used, int start_pos, t_stacks *stacks)
+{
+	int	dist;
+
+	rel_pos += nums_smaller_piv_range(stacks, a_used + 1, rel_pos);
+	rel_pos -= a_used + 1;
+	start_pos++;
+	dist = (start_pos - rel_pos) * -1;
+	if (dist < 0)
+	{
+		if (abs(dist) > (used + 1) / 2)
+			dist += used + 1;
+	}
+	else
+	{
+		if (dist > (used + 1) / 2)
+			dist -= used + 1;
+	}
+	return (dist);
+}
+
+int		calc_ins_dis(int rel_pos, int used, int start_pos,t_stacks *stacks)
+{
+	int	dist;
+
+	rel_pos += nums_bigger_piv_range(stacks, 0, rel_pos);
+	dist = used - (start_pos + rel_pos);
+	dist++;
+	if (dist < 0)
+	{
+		if (abs(dist) > (used + 1) / 2)
+			dist += used + 1;
+	}
+	else
+	{
+		if (dist > (used + 1) / 2)
+			dist -= used + 1;
+	}
+	return (dist);
+}
+
 void	ins_prepare(t_stacks *stacks)
 {
 	int	nil;
+	int	rel_pos1;
+	int	rel_pos2;
+	int	rel_pos3;
+	int	rel_pos4;
 
 	nil = 0;
+	ft_putstr("\n------------move1-------------\n");
 	stacks->rinsa = dist_closest_ins_num_a(stacks->a, stacks->a_used, stacks->a_start);
 	stacks->rinsb = dist_closest_ins_num_b(stacks->b, stacks->b_used, stacks->a_used, stacks->a_start);
 	do_move(stacks, &stacks->rinsa, &stacks->rinsb);
-	final_posistions_rel(stacks);
-	stacks->a_ins_dis = stacks->a[stacks->a_used].dist;
-	stacks->b_ins_dis = stacks->b[stacks->b_used].dist;
 	do_print_op(PB, stacks);
 	do_print_op(SB, stacks);
 	do_print_op(PA, stacks);
-	do_move(stacks, &stacks->a_ins_dis, &nil);
+	stacks->rinsa = 0;
+	stacks->rinsb = 0;
+	rel_pos1 = stacks->b[stacks->b_used].rel_pos;
+	rel_pos2 = stacks->a[stacks->a_used].rel_pos;
+	print_stats(stacks);
+	ft_putstr("\n------------move2-------------\n");
+	stacks->rinsa2 = dist_closest_ins_num_a(stacks->a, stacks->a_used, stacks->a_start);
+	stacks->rinsb2 = dist_closest_ins_num_b(stacks->b, stacks->b_used, stacks->a_used, stacks->a_start);
+	do_move(stacks, &stacks->rinsa2, &stacks->rinsb2);
+	do_print_op(PB, stacks);
+	do_print_op(SB, stacks);
 	do_print_op(PA, stacks);
+	stacks->rinsa2= 0;
+	stacks->rinsb2 = 0;
+	rel_pos3 = stacks->b[stacks->b_used].rel_pos;
+	rel_pos4 = stacks->a[stacks->a_used].rel_pos;
+	print_stats(stacks);
+	final_posistions_rel(stacks);
+	print_global(stacks);
+	ft_putstr("\n------------ins1-------------\n");
+	stacks->a_ins_dis = calc_ins_dis(rel_pos1, stacks->a_used, stacks->a_start, stacks);
+	print_stats(stacks);
+	do_move(stacks, &stacks->a_ins_dis, &stacks->rinsb);
+	do_print_op(PA, stacks);
+	final_posistions_rel(stacks);
+	print_global(stacks);
+	ft_putstr("\n------------ins2-------------\n");
+	stacks->b_ins_dis = calc_ins_dis_b(rel_pos2, stacks->b_used, stacks->a_used, stacks->b_start, stacks);
+	print_stats(stacks);
 	do_move(stacks, &stacks->rinsa, &stacks->b_ins_dis);
 	do_print_op(PB, stacks);
 	final_posistions_rel(stacks);
+	print_global(stacks);
+	ft_putstr("\n------------ins3-------------\n");
+	stacks->a_ins_dis2 = calc_ins_dis(rel_pos3, stacks->a_used, stacks->a_start, stacks);
+	print_stats(stacks);
+	do_move(stacks, &stacks->a_ins_dis2, &stacks->rinsb2);
+	do_print_op(PA, stacks);
+	final_posistions_rel(stacks);
+	print_global(stacks);
+	ft_putstr("\n------------ins4-------------\n");
+	stacks->b_ins_dis2 = calc_ins_dis_b(rel_pos4, stacks->b_used, stacks->a_used, stacks->b_start, stacks);
+	print_stats(stacks);
+	do_move(stacks, &stacks->rinsa2, &stacks->b_ins_dis2);
+	do_print_op(PB, stacks);
+	final_posistions_rel(stacks);
+	print_global(stacks);
 }
 
 int		do_ins(t_stacks *stacks)
