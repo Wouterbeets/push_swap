@@ -27,6 +27,8 @@ int ra(t_stacks *stacks)
 		stacks->rinsa2--;
 		stacks->a_ins_dis--;
 		stacks->a_ins_dis2--;
+		dec_list_ins(stacks->ins_list_a);
+		dec_list_rot(stacks->ins_list_b);
 		stacks->a_start++;
 		if (stacks->a_start > stacks->a_used)
 			stacks->a_start = 0;
@@ -50,6 +52,8 @@ int rb(t_stacks *stacks)
 		stacks->rinsb2--;
 		stacks->b_ins_dis--;
 		stacks->b_ins_dis2--;
+		dec_list_ins(stacks->ins_list_b);
+		dec_list_rot(stacks->ins_list_a);
 		stacks->b_start++;
 		if (stacks->b_start > stacks->b_used)
 			stacks->b_start = 0;
@@ -90,6 +94,8 @@ int rra(t_stacks *stacks)
 		stacks->rinsa2++;
 		stacks->a_ins_dis++;
 		stacks->a_ins_dis2++;
+		inc_list_ins(stacks->ins_list_a);
+		inc_list_rot(stacks->ins_list_b);
 		stacks->a_start--;
 		if (stacks->a_start < 0)
 			stacks->a_start = stacks->a_used;
@@ -114,6 +120,8 @@ int rrb(t_stacks *stacks)
 		stacks->rinsb2++;
 		stacks->b_ins_dis++;
 		stacks->b_ins_dis2++;
+		inc_list_ins(stacks->ins_list_b);
+		inc_list_rot(stacks->ins_list_a);
 		stacks->b_start--;
 		if (stacks->b_start < 0)
 			stacks->b_start = stacks->b_used;

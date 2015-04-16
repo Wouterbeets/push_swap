@@ -87,15 +87,11 @@ static int	dist_right_a(t_layer *stack, int used, int start_pos, t_stacks *stack
 	(void)start_pos;
 	while (++i <= used / 2)
 	{
-		if (stack[i].val > stacks->piv.num)
+		if (stack[i].val > stacks->piv.num || i == stacks->a_start || stack[i].dist == 0)
 			continue;
-		dist = calc_ins_dis(stack[i].rel_pos, used, start_pos, stacks);
-		dist += i;
-		if (abs(dist) > 3)
+		dist = calc_ins_dis(stack[i], stacks, i);
+		if (abs(dist) > INS_MIN_DIST)
 		{
-			ft_putstr(" a=");
-			ft_putnbr(dist);
-			ft_putstr(" ");
 			return (i + 1);
 		}
 	}
@@ -112,15 +108,11 @@ static int	dist_left_a(t_layer *stack, int used, int start_pos, t_stacks *stacks
 	(void)start_pos;
 	while (--i > used / 2)
 	{
-		if (stack[i].val > stacks->piv.num)
+		if (stack[i].val > stacks->piv.num || i == stacks->a_start || stack[i].dist == 0)
 			continue;
-		dist = calc_ins_dis(stack[i].rel_pos, used, start_pos, stacks);
-		dist -= used - i;
-		if (abs(dist) > 3)
+		dist = calc_ins_dis(stack[i], stacks, i);
+		if (abs(dist) > INS_MIN_DIST)
 		{
-			ft_putstr(" a=");
-			ft_putnbr(dist);
-			ft_putstr(" ");
 			return (used - i);
 		}
 	}

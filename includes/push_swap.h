@@ -7,6 +7,7 @@
 # define MAX_DEPTH 8
 # define MAX_TESTS 1
 # define NUM_OP 11
+# define INS_MIN_DIST 3
 typedef	enum
 {
 	SA = 0,
@@ -70,6 +71,14 @@ typedef struct	s_sort
 	int	used;
 }				t_sort;
 
+typedef struct	s_ins_list
+{
+	struct s_ins_list	*next;
+	int					rot;
+	int					ins_dist;					
+	t_layer				val;
+}				t_ins_list;
+
 typedef struct	s_stacks
 {
 	t_layer		*a;
@@ -78,6 +87,8 @@ typedef struct	s_stacks
 	int			b_used;
 	int			a_start;
 	int			b_start;
+	t_ins_list	*ins_list_a;
+	t_ins_list	*ins_list_b;
 	int			rinsa;
 	int			rinsb;
 	int			rinsa2;
@@ -101,15 +112,18 @@ typedef struct	s_stacks
 }				t_stacks;
 
 
+void	print_stats(t_stacks *stacks);
+void	ins_a(t_stacks *stacks);
+void	ins_b(t_stacks *stacks);
 int				abs(int num);
 int				calc_dist_a(int i, int pos, int used, int doubles);
 int				calc_dist_b(int i, int pos, int used, int doubles);
-int		calc_ins_dis(int rel_pos, int used, int start_pos,t_stacks *stacks);
+int				calc_ins_dis(t_layer val, t_stacks *stacks, int i);
 t_layer			*rel_iterator_t(t_stacks *stacks, int i);
 void			print_stack_sorted(t_layer *stack, int used);
 void			divide_by_pivot(t_stacks *stacks);
 int				dist_closest_ins_num_b(t_stacks *stack);
-int				calc_ins_dis_b(int rel_pos, int used, int a_used, int start_pos, t_stacks *stacks);
+int				calc_ins_dis_b(t_layer val, t_stacks *stacks, int i);
 int				dist_closest_ins_num_a(t_stacks *stack);
 int				find_lowest_sub_a(t_layer	*stack, int used);
 int				find_lowest_sub_b(t_layer	*stack, int used);
@@ -159,5 +173,22 @@ void			free_list(t_op_lst *list);
 t_op_lst		*remove_last(t_op_lst *begin);
 t_op_lst		*copy_list(t_op_lst *begin);
 t_op_lst		*sort(t_stacks *stacks);
+
+
+t_ins_list	*new_lst_item_ins(int rot, int ins_dist, t_layer val);
+void		add_to_end_ins(t_ins_list *begin, t_ins_list *to_add);
+t_ins_list		*add_to_begin_ins(t_ins_list *begin, t_ins_list *to_add);
+t_ins_list	*remove_first_ins(t_ins_list *begin);
+t_ins_list	*remove_last_ins(t_ins_list *begin);
+t_ins_list	*add_to_list_ins(t_ins_list *begin, int rot, int ins_dist, t_layer val);
+void		free_list_ins(t_ins_list *list);
+void		dec_list_ins_p(t_ins_list *lst);
+void		dec_list_rot_p(t_ins_list *lst);
+void		inc_list_ins_p(t_ins_list *lst);
+void		inc_list_rot_p(t_ins_list *lst);
+void		dec_list_ins(t_ins_list *lst);
+void		dec_list_rot(t_ins_list *lst);
+void		inc_list_ins(t_ins_list *lst);
+void		inc_list_rot(t_ins_list *lst);
 #endif 
 

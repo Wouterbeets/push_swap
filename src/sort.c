@@ -345,6 +345,7 @@ t_op_lst	*sort(t_stacks *stacks)
 	stacks->max_depth = 5;
 	stacks->max_op = 1;
 	final_posistions(stacks);
+	stacks->piv.sorted = 1;
 	//ft_putstr("global_dist = ");
 	//ft_putnbr(global_dist(stacks));
 	//ft_putstr("\n");

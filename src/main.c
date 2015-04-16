@@ -68,6 +68,8 @@ static t_stacks	*check_args(int ac, char **av)
 	ret->rinsb = 0;
 	ret->rinsa2 = 0;
 	ret->rinsb2 = 0;
+	ret->ins_list_a = NULL;
+	ret->ins_list_b = NULL;
 	while (i < ac)
 	{
 		if (!get_number(av[i], &(ret->a[j].val)))

@@ -8,8 +8,11 @@ FILES	= main.c\
 		  sortedness.c\
 		  sort.c\
 		  list.c\
+		  list2.c\
 		  dist_ins_a.c\
-		  dist_ins_b.c
+		  dist_ins_b.c\
+		  calc_ins_dis.c\
+		  print.c
 SRC		= $(addprefix src/, $(FILES))
 OBJ		= $(SRC:src/%.c=.obj/%.o)
 FLAGS	= -Wall -Werror -Wextra

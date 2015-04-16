@@ -86,7 +86,10 @@ t_layer				*rel_iterator_t(t_stacks *stacks, int i)
 		{
 			pos = posa + i;
 			if (pos > stacks->a_used)
+			{
+				ft_putstr("|");
 				pos -= stacks->a_used + 1;
+			}
 			stack = stacks->a;
 		}
 		else
@@ -94,7 +97,10 @@ t_layer				*rel_iterator_t(t_stacks *stacks, int i)
 			i -= stacks->a_used + 1;
 			pos = posb - i;
 			if (pos < 0)
+			{
 				pos += stacks->b_used + 1;
+				ft_putstr("|");
+			}
 			stack = stacks->b;
 		}
 		return (&stack[pos]);
@@ -134,7 +140,8 @@ void			numb_final_pos_rel(t_stacks *stacks, int i)
 
 	j = -1;
 	val = rel_iterator_t(stacks, i);
-	val->dist = 0;
+	if (val->dist != 0)
+		val->dist = -1;
 	if (val->rel_pos == -1)
 	{
 		val->rel_pos = 0;
@@ -384,32 +391,36 @@ void			print_global(t_stacks *stacks)
 	{
 		tmp = rel_iterator_t(stacks, i);
 		ft_putnbr(tmp->val);
+		ft_putstr("\t");
+		ft_putnbr(tmp->rel_pos);
+		ft_putstr("\t");
+		ft_putnbr(tmp->dist);
+		ft_putstr("\n");
 		if (i == stacks->a_used)
-			ft_putstr(" | ");
-		ft_putstr(" ");
+			ft_putstr("\n -----b------ \n ");
 		i++;
 	}
-	ft_putstr("\n");
-	i = -1;
-	while (++i < stacks->size)
-	{
-		tmp = rel_iterator_t(stacks, i);
-		ft_putnbr(tmp->dist);
-		if (i == stacks->a_used)
-			ft_putstr(" | ");
-		ft_putstr(" ");
-	}
-	ft_putstr("\n");
-	i = -1;
-	while (++i < stacks->size)
-	{
-		tmp = rel_iterator_t(stacks, i);
-		ft_putnbr(tmp->pos);
-		if (i == stacks->a_used)
-			ft_putstr(" | ");
-		ft_putstr(" ");
-	}
-	ft_putstr("\n");
+	//ft_putstr("\n");
+	//i = -1;
+	//while (++i < stacks->size)
+	//{
+	//	tmp = rel_iterator_t(stacks, i);
+	//	ft_putnbr(tmp->dist);
+	//	if (i == stacks->a_used)
+	//		ft_putstr(" | ");
+	//	ft_putstr(" ");
+	//}
+	//ft_putstr("\n");
+	//	i = -1;
+	//	while (++i < stacks->size)
+	//	{
+	//		tmp = rel_iterator_t(stacks, i);
+	//		ft_putnbr(tmp->pos);
+	//		if (i == stacks->a_used)
+	//			ft_putstr(" | ");
+	//		ft_putstr(" ");
+	//	}
+	//	ft_putstr("\n");
 
 }
 

@@ -72,6 +72,10 @@ int pa(t_stacks *stacks)
 		stacks->rinsa2 += stacks->rinsa2 < 0 ? 0 : 1;
 		stacks->a_ins_dis += stacks->a_ins_dis < 0 ? 0 : 1;
 		stacks->a_ins_dis2 += stacks->a_ins_dis2 < 0 ? 0 : 1;
+		inc_list_ins_p(stacks->ins_list_a);
+		dec_list_rot_p(stacks->ins_list_a);
+		dec_list_ins_p(stacks->ins_list_b);
+		inc_list_rot_p(stacks->ins_list_b);
 		stacks->rinsb -= stacks->rinsb < 0 ? 0 : 1;
 		stacks->rinsb2 -= stacks->rinsb2 < 0 ? 0 : 1;
 		stacks->b_ins_dis -= stacks->b_ins_dis < 0 ? 0 : 1;
@@ -96,6 +100,10 @@ int pb(t_stacks *stacks)
 		stacks->rinsa2 -= stacks->rinsa2 < 0 ? 0 : 1;
 		stacks->a_ins_dis -= stacks->a_ins_dis < 0 ? 0 : 1;
 		stacks->a_ins_dis2 -= stacks->a_ins_dis2 < 0 ? 0 : 1;
+		inc_list_ins_p(stacks->ins_list_b);
+		dec_list_rot_p(stacks->ins_list_b);
+		dec_list_ins_p(stacks->ins_list_a);
+		inc_list_rot_p(stacks->ins_list_a);
 		stacks->rinsb += stacks->rinsb < 0 ? 0 : 1;
 		stacks->rinsb2 += stacks->rinsb2 < 0 ? 0 : 1;
 		stacks->b_ins_dis += stacks->b_ins_dis < 0 ? 0 : 1;
