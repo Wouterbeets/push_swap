@@ -87,7 +87,6 @@ t_layer				*rel_iterator_t(t_stacks *stacks, int i)
 			pos = posa + i;
 			if (pos > stacks->a_used)
 			{
-				ft_putstr("|");
 				pos -= stacks->a_used + 1;
 			}
 			stack = stacks->a;
@@ -99,7 +98,6 @@ t_layer				*rel_iterator_t(t_stacks *stacks, int i)
 			if (pos < 0)
 			{
 				pos += stacks->b_used + 1;
-				ft_putstr("|");
 			}
 			stack = stacks->b;
 		}

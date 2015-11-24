@@ -48,9 +48,31 @@ int		nums_bigger_piv_range(t_stacks *stacks, int i, int end)
 	return (bigs);
 }
 
+int		check_higer(t_stacks *stacks,int i, int rel_pos, int rel_pos2)
+{
+	t_layer	*val;
+	int		low_pos;
+
+	low_pos = i;
+	while (i < stacks->size)
+	{
+		val = rel_iterator_t(stacks, ++i);
+		if (val->dist == 0)
+		{
+			if (val->rel_pos > rel_pos)
+				return (low_pos + 1);
+			else
+				low_pos = i;
+				
+		}
+	}
+	return (rel_pos2);
+}
+
 int		check_for_dist_zero_b(t_stacks *stacks, int rel_pos)
 {
 	int		i;
+	int		rel_pos2;
 	t_layer	*val;
 
 	i = rel_pos + 1 + stacks->sness.num_big_piv;
@@ -61,19 +83,21 @@ int		check_for_dist_zero_b(t_stacks *stacks, int rel_pos)
 		{
 			if (val->rel_pos <= rel_pos)
 			{
-				rel_pos = (i - stacks->sness.num_big_piv) + (rel_pos - val->rel_pos);
-				return (rel_pos + nums_smaller_piv_range(stacks, i , rel_pos));
+				i -= stacks->sness.num_big_piv;
+				rel_pos2 = i + (rel_pos - val->rel_pos);
+				rel_pos2 += nums_smaller_piv_range(stacks, i , rel_pos);
+				return (check_higer(stacks, i, rel_pos, rel_pos2));
 			}
 		}
 	}
 	return (rel_pos);
 }
 
-
 int		check_for_dist_zero_a(t_stacks *stacks, int rel_pos)
 {
 	int		i;
 	t_layer	*val;
+	int		rel_pos2;
 
 	i = rel_pos + 1;
 	while (i > 0)
@@ -83,10 +107,9 @@ int		check_for_dist_zero_a(t_stacks *stacks, int rel_pos)
 		{
 			if (val->rel_pos <= rel_pos)
 			{
-				rel_pos = i + (rel_pos - val->rel_pos);
-				rel_pos += nums_bigger_piv_range(stacks, i ,rel_pos);
-				//check from i untill relpos for higher then relpos with dist 0, if found return its pos
-				return (check_higer(stacks, i, rel_pos));
+				rel_pos2 = i + (rel_pos - val->rel_pos);
+				rel_pos2 += nums_bigger_piv_range(stacks, i ,rel_pos);
+				return (check_higer(stacks, i, rel_pos, rel_pos2));
 			}
 		}
 	}
@@ -130,11 +153,10 @@ int		calc_ins_dis_b(t_layer val, t_stacks *stacks, int i)
 	int	rel_pos_in;
 	int	rel_pos_out;
 	int	dist_inner;
-	int	dist_outer;
 
 	rel_pos_in = val.rel_pos;
 	rel_pos_in = check_for_dist_zero_b(stacks, rel_pos_in);
-	rel_pos_in -= stacks->b[stacks->b_start].rel_pos;
+	rel_pos_in -= stacks->a_used + 1;
 	if (rel_pos_in > stacks->b_used)
 		rel_pos_in = stacks->b_used + 1;
 	rel_pos_out = rel_pos_in + val.doubles;
@@ -152,8 +174,6 @@ int		calc_ins_dis_b(t_layer val, t_stacks *stacks, int i)
 		return (abs(rel_pos_in) > abs(rel_pos_out) ? rel_pos_out : rel_pos_in);
 	}
 	dist_inner = (start_pos - rel_pos_in) * -1;
-	dist_outer = (start_pos - (rel_pos_in + val.doubles)) * -1;
 	dist_inner = check_otherway(dist_inner, stacks->b_used);
-	dist_outer = check_otherway(dist_outer, stacks->b_used);
-	return (abs(dist_inner) > abs(dist_outer) ? dist_outer : dist_inner);
+	return (dist_inner);
 }
