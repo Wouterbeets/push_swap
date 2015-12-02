@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 static int		get_number(char *str, int *num)
 {
@@ -69,7 +69,7 @@ static void		set_verbose(t_stacks *s, int ac, char ***av)
 			free(tmp);
 			s->v = 1;
 			s->size = ac - 2;
-			return ();
+			return ;
 		}
 	}
 	*av = remove_element_from_array(ac, *av, 0);

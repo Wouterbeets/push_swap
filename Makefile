@@ -7,6 +7,7 @@ FILES	= main.c\
 		  start.c\
 		  prepare.c\
 		  sortedness.c\
+		  it.c\
 		  print.c
 SRC		= $(addprefix src/, $(FILES))
 OBJ		= $(SRC:src/%.c=.obj/%.o)

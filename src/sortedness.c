@@ -50,7 +50,7 @@ int			abs(int n)
 	return (n);
 }
 
-float		sortedness(t_stacks *s, iter f)
+float		sortedness(t_stacks *s, t_iter f)
 {
 	int		i;
 	t_elem	*e;
