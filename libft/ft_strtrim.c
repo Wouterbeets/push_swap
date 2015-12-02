@@ -22,7 +22,7 @@ char	*ft_strtrim(char const *s)
 	if (s)
 	{
 		i = 0;
-		j = ft_strlen((char *) s) - 1;
+		j = ft_strlen((char *)s) - 1;
 		while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
 			i++;
 		tmp = (char *)malloc(sizeof(char) * (j - i + 1));

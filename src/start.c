@@ -1,6 +1,18 @@
-#include "../includes/push_swap.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/02 15:44:03 by wbeets            #+#    #+#             */
+/*   Updated: 2015/12/02 15:44:03 by wbeets           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int ins_index(t_stacks *s, int index)
+#include "push_swap.h"
+
+static int		ins_index(t_stacks *s, int index)
 {
 	int f_pos;
 	int c_pos;
@@ -13,7 +25,7 @@ static int ins_index(t_stacks *s, int index)
 	{
 		if (ins < 0)
 			ins = ((s->a_used + 1) + ins);
-		else 
+		else
 			ins = (((s->a_used + 1) - ins) * -1);
 	}
 	return (ins);
@@ -21,7 +33,7 @@ static int ins_index(t_stacks *s, int index)
 
 static void		algo(t_stacks *s)
 {
-	int ins;	
+	int ins;
 	int i;
 
 	while (sortedness(s, rel_it) != 1.0)
@@ -32,26 +44,20 @@ static void		algo(t_stacks *s)
 		do_print_op(PB, s);
 		if (ins < 0)
 		{
-			while (i < abs(ins))
-			{
+			while (i++ < abs(ins))
 				do_print_op(RRA, s);
-				i++;
-			}
 		}
-		else 
+		else
 		{
-			while (i < abs(ins))
-			{
+			while (i++ < abs(ins))
 				do_print_op(RA, s);
-				i++;
-			}
 		}
 		do_print_op(PA, s);
 		do_print_op(RA, s);
 	}
 }
 
-void	start(t_stacks *s)
+void			start(t_stacks *s)
 {
 	int rotate;
 	int i;

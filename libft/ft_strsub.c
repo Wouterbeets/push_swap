@@ -14,15 +14,6 @@
 
 #include <stdio.h>
 
-//int main()
-//{
-//
-//	static char	*str = "Un jour je serai, le meilleur dresseur !";
-//	printf("res = %s\n", ft_strsub(str, 8, 8));
-//	return (0);
-//}
-//
-
 char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
 	char	*str;

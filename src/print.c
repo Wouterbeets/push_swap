@@ -1,8 +1,21 @@
-#include "../includes/push_swap.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/02 15:44:01 by wbeets            #+#    #+#             */
+/*   Updated: 2015/12/02 15:44:01 by wbeets           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "push_swap.h"
 
 static void		print_arr(t_elem *arr, int used)
 {
 	int	i;
+
 	i = 0;
 	while (i <= used)
 	{
@@ -15,13 +28,13 @@ static void		print_arr(t_elem *arr, int used)
 	ft_putstr("\n");
 }
 
-void	print_stacks(t_stacks *stacks)
+void			print_stacks(t_stacks *stacks)
 {
 	print_arr(stacks->a, stacks->a_used);
 	print_arr(stacks->b, stacks->b_used);
 }
 
-void	print_op(t_op op)
+void			print_op(t_op op)
 {
 	static char *str[NUM_OP] = {"sa\0", "sb\0", "ss\0", "pa\0",
 		"pb\0", "ra\0", "rb\0", "rr\0", "rra\0", "rrb\0", "rrr\0"};
@@ -29,5 +42,3 @@ void	print_op(t_op op)
 	ft_putstr(str[op]);
 	ft_putstr(" ");
 }
-
-

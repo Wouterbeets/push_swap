@@ -21,10 +21,10 @@ void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 	{
 		while (i < n)
 		{
-			*((char *) dst + i) = *((char *) src + i);
-			if (*((char *) src + i) == (char) c)
+			*((char *)dst + i) = *((char *)src + i);
+			if (*((char *)src + i) == (char)c)
 			{
-				return ((char *) dst + i + 1);
+				return ((char *)dst + i + 1);
 			}
 			i++;
 		}

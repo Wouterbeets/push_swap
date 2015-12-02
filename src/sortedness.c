@@ -1,36 +1,18 @@
-#include "../includes/push_swap.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sortedness.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/02 15:44:02 by wbeets            #+#    #+#             */
+/*   Updated: 2015/12/02 16:45:11 by wbeets           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int		pos_to_index(t_elem *s, int size, int pos)
-{
-	int i;
+#include "push_swap.h"
 
-	i = 0;
-	while (i <= size)
-	{
-		if (s[i].pos == pos)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-static int		l_pos_to_index(t_elem *s, int size, int pos)
-{
-	int index;
-
-	while ((index = pos_to_index(s, size, pos)) == -1 && pos <= size)
-		pos++;
-	return (index);
-}
-
-int		index_to_rel_index(t_stacks *s, int index)
-{
-	int	rel_zero;
-
-	rel_zero = l_pos_to_index(s->a, s->a_used, 0);
-	return ((s->a_used + 1) - (rel_zero - index)) % (s->a_used + 1);
-}
-
-t_elem	*it(t_stacks *s, int num)
+t_elem		*it(t_stacks *s, int num)
 {
 	if (num <= s->a_used)
 		return (&s->a[num]);
@@ -39,7 +21,7 @@ t_elem	*it(t_stacks *s, int num)
 	return (&s->b[num]);
 }
 
-t_elem	*rel_it(t_stacks *s, int num)
+t_elem		*rel_it(t_stacks *s, int num)
 {
 	int rel_zero;
 
@@ -61,7 +43,7 @@ t_elem	*rel_it(t_stacks *s, int num)
 	return (NULL);
 }
 
-int		abs(int n)
+int			abs(int n)
 {
 	if (n < 0)
 		return (-n);
@@ -70,9 +52,9 @@ int		abs(int n)
 
 float		sortedness(t_stacks *s, iter f)
 {
-	int i;
-	t_elem *e;
-	float diff;
+	int		i;
+	t_elem	*e;
+	float	diff;
 
 	i = 0;
 	diff = 0.0;
@@ -82,7 +64,7 @@ float		sortedness(t_stacks *s, iter f)
 		{
 			diff += abs(i - e->pos);
 		}
-		else 
+		else
 			return (-1);
 		i++;
 	}

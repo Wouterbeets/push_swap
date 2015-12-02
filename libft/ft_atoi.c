@@ -12,10 +12,10 @@
 
 #include "libft.h"
 
-int		ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
-	int		is_neg;
-	int		val;
+	int	is_neg;
+	int	val;
 
 	is_neg = 0;
 	val = 0;
@@ -32,8 +32,8 @@ int		ft_atoi(char *str)
 		str++;
 	while (ft_isdigit(*str))
 	{
-			val = (val * 10) + (*str - 48) % 10;
-			str++;
+		val = (val * 10) + (*str - 48) % 10;
+		str++;
 	}
 	return (val = is_neg ? val * -1 : val);
 }

@@ -1,4 +1,16 @@
-#include "../includes/push_swap.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/02 15:44:00 by wbeets            #+#    #+#             */
+/*   Updated: 2015/12/02 15:44:00 by wbeets           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "push_swap.h"
 
 static int		get_number(char *str, int *num)
 {
@@ -22,10 +34,10 @@ static int		get_number(char *str, int *num)
 	return (1);
 }
 
-static char **remove_element_from_array(int ac, char **av, int index)
+static char		**remove_element_from_array(int ac, char **av, int index)
 {
-	char **ret;
-	int i;
+	char	**ret;
+	int		i;
 
 	ret = (char **)malloc((ac - 1) * sizeof(char *));
 	i = 0;
@@ -39,25 +51,25 @@ static char **remove_element_from_array(int ac, char **av, int index)
 		ret[i] = av[i + 1];
 		i++;
 	}
-	return ret;
+	return (ret);
 }
 
 static void		set_verbose(t_stacks *s, int ac, char ***av)
 {
-	int i;
-	char **tmp;
+	int		i;
+	char	**tmp;
 
 	i = 0;
-	while (++i < ac) 
+	while (++i < ac)
 	{
-		if (ft_strcmp((*av)[i], "-v") == 0 )
+		if (ft_strcmp((*av)[i], "-v") == 0)
 		{
 			tmp = remove_element_from_array(ac, *av, i);
 			*av = remove_element_from_array(ac - 1, tmp, 0);
 			free(tmp);
 			s->v = 1;
 			s->size = ac - 2;
-			return;
+			return ();
 		}
 	}
 	*av = remove_element_from_array(ac, *av, 0);
@@ -65,7 +77,7 @@ static void		set_verbose(t_stacks *s, int ac, char ***av)
 	s->v = -1;
 }
 
-static t_stacks *check_args(int ac, char ***av)
+static t_stacks	*check_args(int ac, char ***av)
 {
 	int			i;
 	t_stacks	*s;
@@ -91,7 +103,7 @@ static t_stacks *check_args(int ac, char ***av)
 	return NULL;
 }
 
-int main(int ac, char **av)
+int				main(int ac, char **av)
 {
 	t_stacks *s;
 
@@ -106,4 +118,3 @@ int main(int ac, char **av)
 	free(av);
 	return (1);
 }
-

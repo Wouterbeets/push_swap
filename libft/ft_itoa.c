@@ -19,23 +19,23 @@ static char		*ispos(int n, char *nb, char *rnb)
 
 	i = 0;
 	while (n)
-		{
-			nb[i] = (n % 10) + 48;
-			n = n / 10;
-			i++;
-		}
-		nb[i] = 0;
-		i = 0;
-		j = ft_strlen(nb) - 1;
-		while (j >= 0)
-		{
-			rnb[i] = nb[j];
-			i++;
-			j--;
-		}
-		rnb[i] = 0;
-		free(nb);
-		return (rnb);
+	{
+		nb[i] = (n % 10) + 48;
+		n = n / 10;
+		i++;
+	}
+	nb[i] = 0;
+	i = 0;
+	j = ft_strlen(nb) - 1;
+	while (j >= 0)
+	{
+		rnb[i] = nb[j];
+		i++;
+		j--;
+	}
+	rnb[i] = 0;
+	free(nb);
+	return (rnb);
 }
 
 static char		*isneg(int n, char *nb, char *rnb)

@@ -1,11 +1,23 @@
-#include "../includes/push_swap.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   swpfunc2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/02 15:44:04 by wbeets            #+#    #+#             */
+/*   Updated: 2015/12/02 15:44:04 by wbeets           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "push_swap.h"
 
 int		ra(t_stacks *s)
 {
-	t_elem tmp;
-	int i;
+	t_elem	tmp;
+	int		i;
 
-	tmp  = s->a[s->a_used];
+	tmp = s->a[s->a_used];
 	i = s->a_used;
 	while (i > 0)
 	{
@@ -18,10 +30,10 @@ int		ra(t_stacks *s)
 
 int		rb(t_stacks *s)
 {
-	t_elem tmp;
-	int i;
+	t_elem	tmp;
+	int		i;
 
-	tmp  = s->b[s->b_used];
+	tmp = s->b[s->b_used];
 	i = s->b_used;
 	while (i > 0)
 	{
@@ -30,7 +42,6 @@ int		rb(t_stacks *s)
 	}
 	s->b[0] = tmp;
 	return (RRB);
-
 }
 
 int		rr(t_stacks *s)
@@ -42,8 +53,8 @@ int		rr(t_stacks *s)
 
 int		rra(t_stacks *s)
 {
-	t_elem tmp;
-	int i;
+	t_elem	tmp;
+	int		i;
 
 	tmp = s->a[0];
 	i = 0;
@@ -58,8 +69,8 @@ int		rra(t_stacks *s)
 
 int		rrb(t_stacks *s)
 {
-	t_elem tmp;
-	int i;
+	t_elem	tmp;
+	int		i;
 
 	tmp = s->b[0];
 	i = 0;

@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   do_op.c                                            :+:      :+:    :+:   */
+/*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/02 15:43:41 by wbeets            #+#    #+#             */
-/*   Updated: 2015/12/02 15:43:52 by wbeets           ###   ########.fr       */
+/*   Created: 2015/12/02 16:00:47 by wbeets            #+#    #+#             */
+/*   Updated: 2015/12/02 16:04:35 by wbeets           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#ifndef TYPES_H
+# define TYPES_H
 
-int		do_op(t_op op, t_stacks *stacks)
+typedef struct		s_list
 {
-	static int (*fptr_arr[NUM_OP])(t_stacks *) = {
-		sa, sb, ss, pa, pb, ra, rb, rr, rra, rrb, rrr
-	};
-
-	return (fptr_arr[op](stacks));
-}
-
-int		do_print_op(t_op op, t_stacks *s)
-{
-	int		ret;
-
-	print_op(op);
-	ret = do_op(op, s);
-	if (s->v == 1)
-	{
-		ft_putstr("\n");
-		print_stacks(s);
-	}
-	return (ret);
-}
+	void			*content;
+	size_t			content_size;
+	struct s_list	*next;
+}					t_list;
+#endif
