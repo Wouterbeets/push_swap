@@ -1,17 +1,12 @@
 NAME	= push_swap
 FILES	= main.c\
+		  do_op.c\
+		  swpfunc1.c\
+		  swpfunc2.c\
+		  swpfunc3.c\
 		  start.c\
-		  swapfunc1.c\
-		  swapfunc2.c\
-		  swapfunc3.c\
-		  algo.c\
+		  prepare.c\
 		  sortedness.c\
-		  sort.c\
-		  list.c\
-		  list2.c\
-		  dist_ins_a.c\
-		  dist_ins_b.c\
-		  calc_ins_dis.c\
 		  print.c
 SRC		= $(addprefix src/, $(FILES))
 OBJ		= $(SRC:src/%.c=.obj/%.o)
@@ -23,7 +18,7 @@ NO_COLOR=\x1b[0m
 OK_COLOR=\x1b[32;01m
 ERROR_COLOR=\x1b[31;01m
 WARN_COLOR=\x1b[33;01m
-INCLUDE	= -I includes -I libft  -I /usr/X11/include
+INCLUDE	= -I includes -I libft  
 DEB		= .deb/test
 
 all: $(NAME)

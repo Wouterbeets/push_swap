@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: wbeets <wbeets@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/19 11:48:57 by wbeets            #+#    #+#             */
-/*   Updated: 2015/03/19 11:49:02 by wbeets           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/push_swap.h"
 
 static int		get_number(char *str, int *num)
@@ -34,81 +22,88 @@ static int		get_number(char *str, int *num)
 	return (1);
 }
 
-static int		set_verbose(char *arg, int *i, int *ac)
+static char **remove_element_from_array(int ac, char **av, int index)
 {
-	if (ft_strcmp(arg, "-v") == 0 )
+	char **ret;
+	int i;
+
+	ret = (char **)malloc((ac - 1) * sizeof(char *));
+	i = 0;
+	while (i < index)
 	{
-		*i += 1;
-		*ac -= 1;
-		return (1);
+		ret[i] = av[i];
+		i++;
 	}
-	return (0);
+	while (i < ac - 1)
+	{
+		ret[i] = av[i + 1];
+		i++;
+	}
+	return ret;
 }
 
-static t_stacks	*check_args(int ac, char **av)
+static void		set_verbose(t_stacks *s, int ac, char ***av)
+{
+	int i;
+	char **tmp;
+
+	i = 0;
+	while (++i < ac) 
+	{
+		if (ft_strcmp((*av)[i], "-v") == 0 )
+		{
+			tmp = remove_element_from_array(ac, *av, i);
+			*av = remove_element_from_array(ac - 1, tmp, 0);
+			free(tmp);
+			s->v = 1;
+			s->size = ac - 2;
+			return;
+		}
+	}
+	*av = remove_element_from_array(ac, *av, 0);
+	s->size = ac - 1;
+	s->v = -1;
+}
+
+static t_stacks *check_args(int ac, char ***av)
 {
 	int			i;
-	int			j;
-	t_stacks	*ret;
+	t_stacks	*s;
 
-	i = 1;
-	j = 0;
-	ret = (t_stacks *)malloc(sizeof(t_stacks));
-	ret->size = ac - 1;
-	ret->v = set_verbose(av[1], &i, &ret->size); 
-	ret->a = (t_layer *)malloc(sizeof(t_layer) * (ret->size));
-	ret->b = (t_layer *)malloc(sizeof(t_layer) * (ret->size));
-	ret->a_used = ret->size -1;
-	ret->b_used = -1;
-	ret->a_ins_dis = 0;
-	ret->a_ins_dis2 = 0;
-	ret->b_ins_dis = 0;
-	ret->b_ins_dis2 = 0;
-	ret->rinsa = 0;
-	ret->rinsb = 0;
-	ret->rinsa2 = 0;
-	ret->rinsb2 = 0;
-	ret->ins_list_a = NULL;
-	ret->ins_list_b = NULL;
-	while (i < ac)
+	if (ac > 1)
 	{
-		if (!get_number(av[i], &(ret->a[j].val)))
+		s = (t_stacks *)malloc(sizeof(t_stacks));
+		set_verbose(s, ac, av);
+		s->a_used = s->size - 1;
+		s->b_used = -1;
+		s->a = (t_elem *)malloc(s->size * sizeof(*s->a));
+		s->b = (t_elem *)malloc(s->size * sizeof(*s->a));
+		if (s->a == NULL || s->b == NULL)
 		{
-			ret->size = -1;
-			return (ret);
+			ft_putendl("malloc error");
+			return (NULL);
 		}
-		ret->a[j].pos = -1;
-		ret->a[j].rel_pos = -1;
-		ret->b[j].val = 0;
-		ret->a[i].dist = INT_MAX;
-		i++;
-		j++;
+		i = -1;
+		while (++i < s->size)
+			get_number((*av)[i], &s->a[i].val);
+		return s;
 	}
-	ret->best_lst = NULL;
-	return (ret);
+	return NULL;
 }
 
-int				main(int ac, char **av)
+int main(int ac, char **av)
 {
-	t_stacks	*stacks;
+	t_stacks *s;
 
-	if (ac <= 1)
+	s = check_args(ac, &av);
+	if (s == NULL)
 	{
-		ft_putstr("usage: ./push_swap 5 3 2 54 65 ...\n");
-		return (0);
+		ft_putendl("No numbers to sort in program arguments");
+		return (1);
 	}
-	if ((stacks = check_args(ac, av)) && stacks->size > 0)
-	{
-		start(stacks);
-	}
-	else 
-	{
-		ft_putstr("usage: ./push_swap 5 3 2 54 65 ...\n");
-		ft_putstr("unable to parse numbers\n");
-	}
-	free(stacks->b);
-	free(stacks->a);
-	free_list(stacks->best_lst);
-	free(stacks);
-	return (0);
+	prepare(s);
+	start(s);
+	free(av);
+	return (1);
 }
+
